@@ -1,0 +1,1 @@
+<?php =Array('host'=>'localhost','name'=>'cameroun','usr'=>'admin','pwd'=>'admin','prefix'=>'cameroun_',);?>

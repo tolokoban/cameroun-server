@@ -1,0 +1,313 @@
+/** @module tfw.install */require( 'tfw.install', function(require, module, exports) { var _=function(){var D={"en":{"database":"Database connection","db-pwd":"Password","db-usr":"User name","error":"Error","error-2":"Unable to reach database server! It's either down or you provide a wrong host name.","error-3":"We reached the database server, but the database name is unknown!","error-4":"Invalid DB user/password!","error-5":"A mandatory installation file is missing! Please tell your provider that \"install.sql\" is missing.","error-6":"Your database is not empty! Please ask your provider to do a backup then remove all the tables in it.","host":"Database host name","install":"Terminate installation","mandatory":"All fields are mandatory!","name":"Database name","ok":"Ok","pwd":"Password","siteadmin":"website admin","title":"Last step...","usr":"User name"},"fr":{"database":"Connexion à la base de données","db-pwd":"Mot de passe BD","db-usr":"Utilisateur BD","error":"Erreur récupérable","error-2":"Impossible d'accéder au serveur de bases de données ! Soit il est hors service, soit vous vous êtes trompé d'adresse.","error-3":"Le serveur a répondu, mais il ne connais pas la base de données dont vous avez spécifié le nom.","error-4":"Il y a une erreur dans le nom d'utilisateur et mot de passe de la base de données !","error-5":"Un fichier indispensable à l'installation est manquant ! Veuillez avertir votre fournisseur qu'il manque \"install.sql\".","error-6":"Votre base de données contient d'anciennes données ! Veuillez consulter votre fournisseur pour qu'il puisse faire une sauvegarde puis tout effacer.","host":"Adresse du serveur de BD","install":"Achever l'installation","mandatory":"Tous les champs sont obligatoires !","name":"Nom de la BD","ok":"Ok","pwd":"Mot de passe","siteadmin":"Administrateur du site","title":"Dernière étape...","usr":"Utilisateur"}},X=require("$").intl;function _(){return X(D,arguments);}_.all=D;return _}();
+    /*
+ First step:
+ -----------
+ Call tfw.Install("cameroun_").
+ If the result is 0, everything is already installed.
+ Otherwise, the result will be -9.
+
+ Second step:
+ ------------
+ Call tfw.Install({
+ prefix: "cameroun_",
+ host: "127.0.0.1",
+ name: "database-name",
+ dbUsr: "root",
+ dbPwd: "database-password",
+ usr: "Website-user",
+ pwd: "user-password"
+ })
+ Te file "pri/install.sql" will be applyed to the database. This file is a MySQL file with these placeholders: "${PREFIX}"
+
+ Here are the possible results :
+ *  0: Installation done successfully.
+ * -1: Missing mandatory argument.
+ * -2: Unknown host.
+ * -3: Database not found.
+ * -4: Invalid user name or password.
+ * -5: Missing "pri/install.sql" file.
+ * -6: DB is not empty.
+
+ */
+"use strict";
+
+var CODE_BEHIND = {
+  onFocus: onFocus,
+  check: staticCheck
+};
+
+var $ = require("dom");
+var WS = require("tfw.web-service");
+var PM = require("tfw.binding.property-manager");
+var Err = require("tfw.message").error;
+var Modal = require("wdg.modal");
+var Button = require("tfw.view.button");
+
+
+function onFocus( id ) {
+  var field = this.$elements[id];
+  if( field ) field.focus = true;
+}
+
+function staticCheck( prefix, onCheckDone ) {
+  var View = this;
+  WS.get("tfw.Install", prefix).then(
+    function( retCode ) {
+      if( retCode !== 0 ) {
+        askForInstallInformation( View, prefix, onCheckDone );
+      } else {
+        onCheckDone();
+      }
+    }
+  );
+}
+
+
+function askForInstallInformation( View, prefix, onCheckDone ) {
+  var btnOk = new Button({
+    content: _("install"),
+    icon: "ok",
+    type: "primary"
+  });
+  var view = new View();
+  var modal = new Modal({
+    header: _("title"),
+    content: view,
+    footer: [btnOk]
+  });
+  modal.attach();
+
+  PM( btnOk ).on("action", function () {
+    var fields = ['host', 'name', 'dbUsr', 'dbPwd', 'usr', 'pwd'];
+    var field;
+    for( var k = 0; k < fields.length; k++ ) {
+      field = fields[k];
+      if( view[field].trim().length === 0 ) {        
+        view.focus = field;
+        Err(_("mandatory"));
+        return;
+      }
+    }
+    WS.get("tfw.Install", {
+      prefix: prefix,
+      host: view.host,
+      name: view.name,
+      dbUsr: view.dbUsr,
+      dbPwd: view.dbPwd,
+      usr: view.usr,
+      pwd: view.pwd
+    }).then(
+      function(retCode) {
+        if( retCode !== 0 ) {
+          showError( retCode );
+        } else {
+          modal.detach();
+          onCheckDone();
+        }
+      }
+    );
+  });
+
+  window.setTimeout(function() {
+    view.focus = true;
+  }, 500);
+}
+
+
+function showError( errorCode, view ) {
+  var btnOk = new Button({
+    content: _('ok'), flat: true
+  });
+  var modal = new Modal({
+    header: _('error'),
+    content: $.div('tfw-install-error', [_('error' + errorCode)]),
+    footer: btnOk
+  });
+  PM( btnOk ).on( "action", function() {
+    modal.detach();
+    view.focus();
+  });
+  modal.attach();
+}
+
+
+//===============================
+// XJS:View autogenerated code.
+try {
+  module.exports = function() {
+    //--------------------
+    // Dependent modules.
+    var $ = require('dom');
+    var PM = require('tfw.binding.property-manager');
+    var Tag = require('tfw.view').Tag;
+    var Link = require('tfw.binding.link');
+    var View = require('tfw.view');;
+    var Converters = require('tfw.binding.converters');
+    var TfwViewTextbox = require('tfw.view.textbox');
+    //-------------------------------------------------------
+    // Check if needed functions are defined in code behind.
+    View.ensureCodeBehind( CODE_BEHIND, "onFocus", "check" );
+    //-------------------
+    // Global functions.
+    function defVal(args, attName, attValue) { return args[attName] === undefined ? attValue : args[attName]; };
+    //-------------------
+    // Global variables.
+    var enumCast = Converters.get('enum');
+    var stringCast = Converters.get('string');
+    //-------------------
+    // Class definition.
+    var ViewClass = function( args ) {
+      try {
+        if( typeof args === 'undefined' ) args = {};
+        this.$elements = {};
+        var that = this;
+        var pm = PM(this);
+        //--------------------
+        // Create attributes.
+        pm.create("focus", { cast: enumCast(["host","name","dbUsr","dbPwd","usr","pwd"]) });
+        pm.create("host", { cast: stringCast() });
+        pm.create("name", { cast: stringCast() });
+        pm.create("dbUsr", { cast: stringCast() });
+        pm.create("dbPwd", { cast: stringCast() });
+        pm.create("usr", { cast: stringCast() });
+        pm.create("pwd", { cast: stringCast() });
+        //------------------
+        // Create elements.
+        var e_ = new Tag('DIV', ["class"]);
+        var e_0 = new Tag('FIELDSET');
+        var e_00 = new Tag('LEGEND', ["textcontent"]);
+        var e_host = new TfwViewTextbox({
+          width: "100%",
+          wide: true,
+          label: _("host")
+        });
+        this.$elements.host = e_host;
+        var e_name = new TfwViewTextbox({
+          width: "100%",
+          wide: true,
+          label: _("name")
+        });
+        this.$elements.name = e_name;
+        var e_dbUsr = new TfwViewTextbox({
+          width: "100%",
+          wide: true,
+          label: _("db-usr")
+        });
+        this.$elements.dbUsr = e_dbUsr;
+        var e_dbPwd = new TfwViewTextbox({
+          width: "100%",
+          wide: true,
+          type: "password",
+          label: _("db-pwd")
+        });
+        this.$elements.dbPwd = e_dbPwd;
+        $.add( e_0, e_00, e_host, e_name, e_dbUsr, e_dbPwd );
+        var e_1 = new Tag('FIELDSET');
+        var e_10 = new Tag('LEGEND', ["textcontent"]);
+        var e_usr = new TfwViewTextbox({
+          width: "100%",
+          wide: true,
+          label: _("usr")
+        });
+        this.$elements.usr = e_usr;
+        var e_pwd = new TfwViewTextbox({
+          width: "100%",
+          wide: true,
+          type: "password",
+          label: _("pwd")
+        });
+        this.$elements.pwd = e_pwd;
+        $.add( e_1, e_10, e_usr, e_pwd );
+        $.add( e_, e_0, e_1 );
+        //-----------------------
+        // Declare root element.
+        Object.defineProperty( this, '$', {value: e_.$, writable: false, enumerable: false, configurable: false } );
+        //-------
+        // Links
+        new Link({
+          A:{obj: that, name: 'host'},
+          B:{obj: e_host, name: 'value'}
+        });
+        new Link({
+          A:{obj: that, name: 'name'},
+          B:{obj: e_name, name: 'value'}
+        });
+        new Link({
+          A:{obj: that, name: 'dbUsr'},
+          B:{obj: e_dbUsr, name: 'value'}
+        });
+        new Link({
+          A:{obj: that, name: 'dbPwd'},
+          B:{obj: e_dbPwd, name: 'value'}
+        });
+        new Link({
+          A:{obj: that, name: 'usr'},
+          B:{obj: e_usr, name: 'value'}
+        });
+        new Link({
+          A:{obj: that, name: 'pwd'},
+          B:{obj: e_pwd, name: 'value'}
+        });
+        //-----------------------
+        // On attribute changed.
+        pm.on( "focus", function(v) {
+          try {
+            CODE_BEHIND.onFocus.call( that, v );
+          }
+          catch( ex ) {
+            console.error('Exception in function behind "onFocus" of module "mod/tfw.install.js" for attribute "focus"!  ');
+            console.error( ex );
+          }} );
+        //----------------------
+        // Initialize elements.
+        e_.class = "tfw-install";
+        e_00.textcontent = _("database");
+        e_10.textcontent = _("siteadmin");
+        //------------------------
+        // Initialize attributes.
+        this.focus = defVal(args, "focus", "host");
+        this.host = defVal(args, "host", "");
+        this.name = defVal(args, "name", "");
+        this.dbUsr = defVal(args, "dbUsr", "root");
+        this.dbPwd = defVal(args, "dbPwd", "");
+        this.usr = defVal(args, "usr", "admin");
+        this.pwd = defVal(args, "pwd", "");
+        $.addClass(this, 'view', 'custom');
+      }
+      catch( ex ) {
+        console.error('mod/tfw.install.js', ex);
+        throw Error('Instantiation error in XJS of "mod/tfw.install.js":\n' + ex)
+      }
+    };
+    //------------------
+    // Static members..
+    ViewClass.check = CODE_BEHIND.check.bind(ViewClass);
+    return ViewClass;
+  }();
+}
+catch( ex ) {
+  throw Error('Definition error in XJS of "mod/tfw.install.js"\n' + ex)
+}
+
+
+  
+module.exports._ = _;
+/**
+ * @module tfw.install
+ * @see module:$
+ * @see module:dom
+ * @see module:tfw.web-service
+ * @see module:tfw.binding.property-manager
+ * @see module:tfw.message
+ * @see module:wdg.modal
+ * @see module:tfw.view.button
+ * @see module:dom
+ * @see module:tfw.binding.property-manager
+ * @see module:tfw.view
+ * @see module:tfw.binding.link
+ * @see module:tfw.view
+ * @see module:tfw.binding.converters
+ * @see module:tfw.view.textbox
+
+ */
+});

@@ -1,0 +1,19 @@
+.tfw-install .tfw-view-textbox {
+  display:block;
+  width: 100%;
+}
+
+.tfw-install fieldset {
+  background: #ddd;
+  border: none;
+}
+
+.tfw-install fieldset > legend {
+  background: transparent;
+  opacity: .5;
+}
+
+.tfw-install-error {
+  color: #d00;
+  width: 240px;
+}

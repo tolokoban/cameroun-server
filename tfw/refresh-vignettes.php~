@@ -1,0 +1,27 @@
+<html><head></head><body>
+<?php
+/*
+   Open Graph is a protocol to share webpages over FaceBook: http://ogp.me/
+ */
+include_once("tfw/php/db.inc");
+include_once("tfw/php/Preview.php");
+
+$id = intVal($_GET["id"]);
+$stm = $DB->query("SELECT id, name FROM " . $DB->table("trace") . " ORDER BY id DESC");
+if( $stm ) {
+    while( $row = $stm->fetch() ) {
+        try {
+            $id = $row['id'];
+            $name = $row['name'];
+            $preview = new Preview( $id );
+            $url = $preview->load( true );
+            $url = substr( $url, 0, -4 ). "-fb.jpg";
+            echo "<p>$name <a href='tfw/$url'>$id</a></p>\n";
+        }
+        catch( Exception $err ) {
+            echo "Trace #$id: <pre>" . $err->getMessage() . "</pre>\n";
+        }
+    }
+}
+?>
+</html>
