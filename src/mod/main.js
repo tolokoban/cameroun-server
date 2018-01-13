@@ -1,24 +1,13 @@
-function $(id) {
-    return window.document.getElementById(id);
-}
+"use strict";
 
-function setLanguage(lang) {
-    require("$").lang(lang);
-    window.location = "index.html";
-}
+var Install = require("tfw.install");
 
-$("welcome").textContent = _("welcome");
-$("fr").addEventListener(
-    "click",
-    function() {
-        setLanguage("fr");
-    },
-    false
-);
-$("en").addEventListener(
-    "click",
-    function() {
-        setLanguage("en");
-    },
-    false
-);
+
+exports.start = function() {
+  Install.check("cameroun", start);
+};
+
+
+function start() {
+  
+}

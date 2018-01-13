@@ -1,0 +1,48 @@
+{View DIV class:tfw-install
+  view.attribs: {
+    focus: {[host,name,dbUsr,dbPwd,usr,pwd] "host" behind:onFocus}
+    host: {string ""}
+    name: {string ""}
+    db-usr: {string "root"}
+    db-pwd: {string ""}
+    usr: {string "admin"}
+    pwd: {string ""}    
+  }
+  
+  view.statics: "check"
+
+  [
+    {FIELDSET [
+      {LEGEND textcontent:{Intl database}}
+      {tfw.view.textbox view.id:host
+        width:"100%" wide:true
+        value:{Bind host}
+        label:{Intl host}}
+      {tfw.view.textbox view.id:name
+        width:"100%" wide:true
+        value:{Bind name}
+        label:{Intl name}}
+      {tfw.view.textbox view.id:dbUsr
+        width:"100%" wide:true
+        value:{Bind db-usr}
+        label:{Intl db-usr}}
+      {tfw.view.textbox view.id:dbPwd
+        width:"100%" wide:true
+        type:password
+        value:{Bind db-pwd}
+        label:{Intl db-pwd}}
+    ]}
+    {FIELDSET [
+      {LEGEND textcontent:{Intl siteadmin}}
+      {tfw.view.textbox view.id:usr
+        width:"100%" wide:true
+        value:{Bind usr}
+        label:{Intl usr}}
+      {tfw.view.textbox view.id:pwd
+        width:"100%" wide:true
+        type:password
+        value:{Bind pwd}
+        label:{Intl pwd}}
+    ]}
+  ]
+}
