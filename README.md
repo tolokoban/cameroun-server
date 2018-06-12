@@ -7,7 +7,7 @@ Il est possible d'extraire des données à des fins statistiques depuis *camerou
 
 ## Installation
 ### Client
-[https://github.com/tolokoban/cameroun]
+[Téléchargez le client ici](https://github.com/tolokoban/cameroun).
 
 ### Serveur
 Il vous faut un hébergeur qui propose du PHP7 et du MySQL.
