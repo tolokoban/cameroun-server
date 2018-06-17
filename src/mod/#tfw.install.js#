@@ -1,32 +1,36 @@
 /*
- First step:
- -----------
- Call tfw.Install("cameroun_").
- If the result is 0, everything is already installed.
- Otherwise, the result will be -9.
+ *  First step:
+ *  -----------
+ *  Call tfw.Install("cameroun").
+ *  If the result is 0, everything is already installed.
+ *  Otherwise, the result will be -9.
+ * 
+ *  Second step:
+ *  ------------
+ *  Call tfw.Install({
+ *  prefix: "cameroun_",
+ *  host: "127.0.0.1",
+ *  name: "database-name",
+ *  dbUsr: "root",
+ *  dbPwd: "database-password",
+ *  usr: "Website-user",
+ *  pwd: "user-password"
+ *  })
 
- Second step:
- ------------
- Call tfw.Install({
- prefix: "cameroun_",
- host: "127.0.0.1",
- name: "database-name",
- dbUsr: "root",
- dbPwd: "database-password",
- usr: "Website-user",
- pwd: "user-password"
- })
- Te file "pri/install.sql" will be applyed to the database. This file is a MySQL file with these placeholders: "${PREFIX}"
-
- Here are the possible results :
- *  0: Installation done successfully.
- * -1: Missing mandatory argument.
- * -2: Unknown host.
- * -3: Database not found.
- * -4: Invalid user name or password.
- * -5: Missing "pri/install.sql" file.
- * -6: DB is not empty.
- 
+ * The file "pri/install.sql" will be applyed to the database. This file is a MySQL file with these placeholders:
+ * * `{PREFIX}`
+ * * `{USER}`
+ * * `{PASSWORD}`
+ * * `{DATE}`
+ * 
+ *  Here are the possible results :
+ *  *  0: Installation done successfully.
+ *  * -1: Missing mandatory argument.
+ *  * -2: Unknown host.
+ *  * -3: Database not found.
+ *  * -4: Invalid user name or password.
+ *  * -5: Missing "pri/install.sql" file.
+ *  * -6: DB is not empty.
  */
 "use strict";
 
@@ -52,6 +56,7 @@ function staticCheck( prefix, onCheckDone ) {
   var View = this;
   WS.get("tfw.Install", prefix).then(
     function( retCode ) {
+      
       if( retCode !== 0 ) {
         askForInstallInformation( View, prefix, onCheckDone );
       } else {

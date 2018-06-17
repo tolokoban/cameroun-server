@@ -1,0 +1,18 @@
+{Data
+  tables: {
+    organization: { name: string256 }
+    carecenter: { name: string256 }
+    patient: { key: string64 }
+    patient-form: { value: string }
+    admission: { enter: date, exit: date }
+    consultation: { date: date }
+    type: { value: string }
+    translation: { lang: string8, value: string256 }
+  }
+
+  links: [
+    { carecenter: organization, organization: carecenters* }
+    { patient: organization, organization: patients* }
+    { patient-form: organization, organization: patient-forms* }
+  ]
+}
