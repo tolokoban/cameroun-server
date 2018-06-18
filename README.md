@@ -22,6 +22,8 @@ npm update
 cd submoidules/tfw
 git submodules init
 git submodules update
+git checkout master
+npm update
 cd ../..
 npm run watch
 ```
