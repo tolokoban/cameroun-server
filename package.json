@@ -28,7 +28,7 @@
                 "\\.html$"
             ]
         },
-        "output": "www"
+        "output": "../../www/cameroun-server"
     },
     "version": "0.0.1",
     "reservedModules": [],
@@ -37,7 +37,7 @@
         "karma": "^0.13",
         "karma-chrome-launcher": "^0.2",
         "karma-firefox-launcher": "^0.1",
-        "karma-jasmine": "^0.3.6",
-        "toloframework": "^0"
-    }
+        "karma-jasmine": "^0.3.6"
+    },
+    "devDependencies": {}
 }
