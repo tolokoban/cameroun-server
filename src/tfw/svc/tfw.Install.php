@@ -32,10 +32,14 @@ $ROLE = '';  // Everyone can access this service.
  * -6: DB is not empty.
  */
 function execService($args) {
-    //if( is_string( $args ) ) -9;
-
+    error_log("tfw.Install: " . json_encode($args));
     $configFile = "./php/@db.cfg.inc";
-    if( file_exists( $configFile ) ) return 0;
+    
+    if( is_string( $args ) ) {
+        if( file_exists( $configFile ) ) return 0;
+        error_log("[tfw.Install] Config file does not exist: $configFile");
+        return -9;
+    }
 
     $mandatoryArguments = Array('prefix', 'host', 'name', 'dbUsr', 'dbPwd', 'usr', 'pwd');
     foreach( $mandatoryArguments as $name ) {
@@ -100,11 +104,11 @@ function execService($args) {
 
     file_put_contents(
         $configFile,
-        "<?php $DB_CFG=Array('host'=>'$host',"
+        "<?php \$DB_CFG=Array('host'=>'$host',"
         . "'name'=>'$name',"
-        . "'usr'=>'$usr',"
-        . "'pwd'=>'$pwd',"
-        . "'prefix'=>'$prefix');?>"
+      . "'usr'=>'$usr',"
+      . "'pwd'=>'$pwd',"
+      . "'prefix'=>'$prefix');?>"
     );
 
     return 0;

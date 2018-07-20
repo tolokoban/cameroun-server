@@ -12,8 +12,8 @@
   view.statics: "check"
 
   [
-    {FIELDSET [
-      {LEGEND textcontent:{Intl database}}
+    {SECTION class: thm-fg [
+      {H1 textcontent:{Intl database}}
       {tfw.view.textbox view.id:host
         width:"100%" wide:true
         value:{Bind host}
@@ -32,8 +32,8 @@
         value:{Bind db-pwd}
         label:{Intl db-pwd}}
     ]}
-    {FIELDSET [
-      {LEGEND textcontent:{Intl siteadmin}}
+    {SECTION class: thm-fg [
+      {H1 textcontent:{Intl siteadmin}}
       {tfw.view.textbox view.id:usr
         width:"100%" wide:true
         value:{Bind usr}

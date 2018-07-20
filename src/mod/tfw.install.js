@@ -72,7 +72,7 @@ function staticCheck( prefix, onCheckDone ) {
 
 function askForInstallInformation( View, prefix, onCheckDone ) {
   var btnOk = new Button({
-    content: _("install"),
+    text: _("install"),
     icon: "ok",
     type: "primary"
   });
@@ -106,7 +106,7 @@ function askForInstallInformation( View, prefix, onCheckDone ) {
     }).then(
       function(retCode) {
         if( retCode !== 0 ) {
-          showError( retCode );
+          showError( retCode, view );
         } else {
           modal.detach();
           onCheckDone();
@@ -122,17 +122,15 @@ function askForInstallInformation( View, prefix, onCheckDone ) {
 
 
 function showError( errorCode, view ) {
-  var btnOk = new Button({
-    content: _('ok'), flat: true
-  });
+  var btnOk = new Button({ text: _('ok'), flat: true });
   var modal = new Modal({
     header: _('error'),
-    content: $.div('tfw-install-error', [_('error' + errorCode)]),
+    content: $.div('tfw-install-error', [_('error' + errorCode, view.host, view.name)]),
     footer: btnOk
   });
   PM( btnOk ).on( "action", function() {
     modal.detach();
-    view.focus();
+    view.focus = true;
   });
   modal.attach();
 }

@@ -1,0 +1,31 @@
+div.soin-view-login {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  margin: 0;
+  z-index: 99999;
+  padding: 0;
+  transform: scale(0);
+  transition: transform .2s;
+}
+
+div.soin-view-login.show {
+  transform: scale(1);
+  transition: transform .2s;
+}
+
+div.soin-view-login > header {
+  line-height: 32px;
+  height: 32px;
+  padding: 0 8px 0 16px;
+}
+
+div.soin-view-login > div {
+  padding: 16px;
+}
+
+div.soin-view-login > footer {
+  text-align: right;
+}
