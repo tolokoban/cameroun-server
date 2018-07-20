@@ -32,7 +32,7 @@ $ROLE = '';  // Everyone can access this service.
  * -6: DB is not empty.
  */
 function execService($args) {
-    if( is_string( $args ) ) -9;
+    //if( is_string( $args ) ) -9;
 
     $configFile = "./php/@db.cfg.inc";
     if( file_exists( $configFile ) ) return 0;

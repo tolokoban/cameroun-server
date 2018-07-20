@@ -1,17 +1,22 @@
 "use strict";
 
+var $ = require("dom");
 var Splash = require("soin.splash");
 var Install = require("tfw.install");
 
 
 exports.start = function() {
-  close();
+  $.registerTheme( "soin", {
+    bgP: "#630", bgS: "#420"
+  });
+  $.applyTheme( "soin" );
+  
   Install.check("cameroun", start);
 };
 
 
 function start() {
-
+  close();
 }
 
 
