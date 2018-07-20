@@ -1,4 +1,28 @@
 /*
+ * var Install = require("tfw.install");
+ * Intall.check( "cameroun", start );
+ */
+"use strict";
+
+var CODE_BEHIND = {
+  onFocus: onFocus,
+  check: staticCheck
+};
+
+var $ = require("dom");
+var WS = require("tfw.web-service");
+var PM = require("tfw.binding.property-manager");
+var Err = require("tfw.message").error;
+var Modal = require("wdg.modal");
+var Button = require("tfw.view.button");
+
+
+function onFocus( id ) {
+  var field = this.$elements[id];
+  if( field ) field.focus = true;
+}
+
+/* 
  *  First step:
  *  -----------
  *  Call tfw.Install("cameroun").
@@ -32,26 +56,6 @@
  *  * -5: Missing "pri/install.sql" file.
  *  * -6: DB is not empty.
  */
-"use strict";
-
-var CODE_BEHIND = {
-  onFocus: onFocus,
-  check: staticCheck
-};
-
-var $ = require("dom");
-var WS = require("tfw.web-service");
-var PM = require("tfw.binding.property-manager");
-var Err = require("tfw.message").error;
-var Modal = require("wdg.modal");
-var Button = require("tfw.view.button");
-
-
-function onFocus( id ) {
-  var field = this.$elements[id];
-  if( field ) field.focus = true;
-}
-
 function staticCheck( prefix, onCheckDone ) {
   var View = this;
   WS.get("tfw.Install", prefix).then(

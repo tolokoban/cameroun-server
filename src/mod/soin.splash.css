@@ -1,0 +1,11 @@
+#splash1, #splash2 {
+    transition: transform 1s;
+}
+
+body.soin-splash-open > #splash1 {
+    transform: translateY(-100%);
+}
+
+body.soin-splash-open > #splash2 {
+    transform: translateY(100%);
+}
