@@ -85,6 +85,7 @@ function askForInstallInformation( View, prefix, onCheckDone ) {
   modal.attach();
 
   PM( btnOk ).on("action", function () {
+    modal.detach();
     var fields = ['host', 'name', 'dbUsr', 'dbPwd', 'usr', 'pwd'];
     var field;
     for( var k = 0; k < fields.length; k++ ) {
@@ -107,8 +108,8 @@ function askForInstallInformation( View, prefix, onCheckDone ) {
       function(retCode) {
         if( retCode !== 0 ) {
           showError( retCode, view );
+          modal.attach();
         } else {
-          modal.detach();
           onCheckDone();
         }
       }

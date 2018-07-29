@@ -1,7 +1,8 @@
 "use strict";
 
 var CODE_BEHIND = {
-  connect: connect
+  connect: connect,
+  onClick: onClick
 };
 
 var $ = require("dom");
@@ -18,7 +19,22 @@ function connect() {
   window.setTimeout(function() {
     view.show = true;
   }, 300);
-  PM( view ).on( "action", function() {
-    view.wait = true;
-  });
+  var pm = PM( view );
+  pm.on( "actionSuccess", function() { view.show = false; });
+  pm.on( "actionFailure", function() { view.show = false; });
+  return view;
+}
+
+
+function onClick() {
+  var that = this;
+
+  WS.login( this.login, this.password ).then(
+    function( user ) {
+      that.actionSuccess = user;      
+    },
+    function( err ) {
+      that.actionFailure = err;
+    }
+  );
 }

@@ -1,0 +1,15 @@
+{View DIV class:soin-view-panel-logout
+  view.attribs: {
+    user-name: {string}
+    action-logout: {action}
+  }
+
+  view.init: init
+  
+  [
+    {DIV textcontent:{Bind user-name}}
+    {FOOTER [
+      {tfw.view.button icon:logout text:{Intl logout} flat:true on.action:logout}
+    ]}
+  ]
+}

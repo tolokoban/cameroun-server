@@ -2,7 +2,8 @@
   view.attribs: {
     login: {string}
     password: {string}
-    action: {action}
+    action-success: {action}
+    action-failure: {action}
     show: {boolean false}
     wait: {boolean false}
   }
@@ -14,12 +15,20 @@
   [
     {HEADER textcontent:{Intl header} class: thm-bgP}
     {DIV class: thm-bg1 [
-      {tfw.view.textbox label:{Intl login} value:{Bind login} wide:true focus:true}
-      {tfw.view.textbox label:{Intl password} value:{Bind password} wide:true type:password}
+      {tfw.view.textbox view.id:txtLogin
+                        label:{Intl login}
+                        value:{Bind login}
+                        wide:true
+                        focus:true}
+      {tfw.view.textbox label:{Intl password}
+                        value:{Bind password}
+                        focus: {Bind txtLogin/action}
+                        wide:true
+                        type:password}
     ]}
     {FOOTER class: thm-bgPL [
       {tfw.view.button text:{Intl action}
-                       action:{Bind action}
+                       on.action:onClick
                        icon:ok
                        flat:true
                        wait:{Bind wait}}

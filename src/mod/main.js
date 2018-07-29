@@ -1,6 +1,10 @@
 "use strict";
 
 var $ = require("dom");
+var WS = require("tfw.web-service");
+var PM = require("tfw.binding.property-manager");
+var Panel = require("soin.view.panel");
+var Logout = require("soin.view.panel.logout");
 var Splash = require("soin.splash");
 var Install = require("tfw.install");
 var ViewLogin = require("soin.view.login");
@@ -23,9 +27,47 @@ exports.start = function() {
 
 
 function login() {
-  ViewLogin.connect();
+  var view = ViewLogin.connect();
+  var pm = PM( view );
+  pm.on( "actionSuccess", loginSuccess );
+  pm.on( "actionFailure", loginFailure );
 }
 
 function start() {
-  Splash.open();
+  removeAllPanels();
+  addLogout();
+  Splash.open();  
+}
+
+
+function loginSuccess( user ) {
+  console.info("[main] user=", user);
+  start();
+}
+
+
+function loginFailure( err ) {
+  console.info("[main] err=", err);
+  alert(err);
+}
+
+
+function addLogout() {
+  var logout = new Logout();
+  PM( logout ).on( "actionLogout", function() {
+    Splash.close();
+    window.setTimeout(function() {
+      login();
+    }, 1000);
+  });
+  var panel = new Panel({ content: logout });
+  $.add( document.body, panel );
+}
+
+
+function removeAllPanels() {
+  var panels = document.querySelectorAll("div.soin-view-panel");
+  for( var i=0; i<panels.length; i++ ) {
+    $.detach( panels[i] );
+  }
 }

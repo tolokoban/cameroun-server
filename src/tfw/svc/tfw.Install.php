@@ -102,12 +102,14 @@ function execService($args) {
         return $e->getMessage();
     }
 
+    $dbUsr = $args['dbUsr'];
+    $dbPwd = $args['dbPwd'];
     file_put_contents(
         $configFile,
         "<?php \$DB_CFG=Array('host'=>'$host',"
         . "'name'=>'$name',"
-      . "'usr'=>'$usr',"
-      . "'pwd'=>'$pwd',"
+      . "'usr'=>'$dbUsr',"
+      . "'pwd'=>'$dbPwd',"
       . "'prefix'=>'$prefix');?>"
     );
 

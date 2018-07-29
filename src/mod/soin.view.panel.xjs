@@ -1,0 +1,24 @@
+{View DIV class:"soin-view-panel thm-bgP thm-ele8"
+  view.attribs: {
+    content: any
+  }
+
+  [
+    {DIV [
+      {SVG xmlns:"http://www.w3.org/2000/svg"
+           width: 2000 height: 40
+           version:"1.1"
+           "xmlns:xlink":"http://www.w3.org/1999/xlink"
+           viewBox:"10 -20 2000 40"
+           preserveAspectRatio:"xMinYMin" [
+        {G [
+          {PATH fill:none stroke:#fb7 stroke-width:10
+                d:"M-10,10 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20"}
+          {PATH fill:none stroke:#420 stroke-width:8
+                d:"M-10,10 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20"}
+        ]}
+      ]}
+    ]}
+    {SECTION view.children:{Bind content}}
+  ]
+}
