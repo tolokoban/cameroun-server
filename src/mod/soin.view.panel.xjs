@@ -1,4 +1,4 @@
-{View DIV class:"soin-view-panel thm-bgP thm-ele8"
+{View DIV class:"soin-view-panel thm-bgPD thm-ele8"
   view.attribs: {
     content: any
   }

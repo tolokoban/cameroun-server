@@ -1,6 +1,6 @@
 {View DIV class:tfw-install
   view.attribs: {
-    focus: {[host,name,dbUsr,dbPwd,usr,pwd] "host" behind:onFocus}
+    focus: {[host,name,prefix,dbUsr,dbPwd,usr,pwd] "host" behind:onFocus}
     host: {string ""}
     name: {string ""}
     db-usr: {string "root"}

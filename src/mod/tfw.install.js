@@ -41,7 +41,7 @@ function onFocus( id ) {
  *  pwd: "user-password"
  *  })
 
- * The file "pri/install.sql" will be applyed to the database. This file is a MySQL file with these placeholders:
+ * The file "pri/install.sql" will be applied to the database. This file is a MySQL file with these placeholders:
  * * `{PREFIX}`
  * * `{USER}`
  * * `{PASSWORD}`

@@ -1,0 +1,9 @@
+{View DIV class:soin-view-orga
+  view.attribs: {
+    name: {string}
+  }
+
+  [
+    {tfw.view.textbox label:{Intl orga-name} wide:true value:{Bind name}}
+  ]
+}
