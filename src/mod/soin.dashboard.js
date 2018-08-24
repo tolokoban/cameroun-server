@@ -131,5 +131,5 @@ function alertOrganizationNameAlreadyExist( name ) {
  */
 function updateOrganizations( organizations ) {
   if( typeof organizations !== 'undefined' ) g_organizations = organizations;
-  g_viewLogout.organizations = g_organizations;
+  g_viewLogout.organizations = g_organizations.slice();
 }
