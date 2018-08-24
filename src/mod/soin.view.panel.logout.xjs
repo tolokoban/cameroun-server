@@ -12,7 +12,7 @@
                      flat:false
                      action:{Bind action-new-orga}
                      wide:true}
-    {P textcontent:{Intl no-orga}}
+    {DIV view.children:{Bind organizations map:mapOrga header:mapOrgaHeader}}
     {FOOTER [
       {HR}
       {tfw.view.button icon:logout

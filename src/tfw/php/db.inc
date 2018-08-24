@@ -58,7 +58,7 @@ class Database {
     function table($name) {
         global $DB_CFG;
         try {
-            return $DB_CFG["prefix"] . $name;
+            return ' ' . $DB_CFG["prefix"] . $name . ' ';
         }
         catch (Exception $e) {
             throw new Exception("[Database::prepare]\n" . $e->getMessage());

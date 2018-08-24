@@ -19,37 +19,22 @@ namespace Data {
     function query() {
         global $DB;
         try {
-            $nbArgs = func_num_args();
-            $args = func_get_args();
-            $sql = $args[0];
-            switch( $nbArgs ) {
-                case 1: return $DB->query( $sql );
-                case 2: return $DB->query( $sql, $args[1] );
-                case 3: return $DB->query( $sql, $args[1], $args[2] );
-                case 4: return $DB->query( $sql, $args[1], $args[2], $args[3] );
-                case 5: return $DB->query( $sql, $args[1], $args[2], $args[3], $args[4] );
-                case 6: return $DB->query( $sql, $args[1], $args[2], $args[3], $args[4], $args[5] );
-                case 7: return $DB->query( $sql, $args[1], $args[2], $args[3], $args[4], $args[5], $args[6] );
-                case 8: return $DB->query( $sql, $args[1], $args[2], $args[3], $args[4], $args[5], $args[6], $args[7] );
-                case 9: return $DB->query( $sql, $args[1], $args[2], $args[3], $args[4], $args[5], $args[6], $args[7], $args[8] );
-                case 10: return $DB->query( $sql, $args[1], $args[2], $args[3], $args[4], $args[5], $args[6], $args[7], $args[8], $args[9] );
-                default: throw new \Exception( "Too many args: $nbArgs!" );
-            }
+            return \call_user_func_array( Array($DB, "query"), func_get_args() );
         }
         catch( Exception $ex ) {
             throw new \Exception( $ex->getMessage(), SQS_ERROR );
         }
     }
     function fetch() {
-        $stm = call_user_func_array( query, func_get_args() );
+        $stm = \call_user_func_array( "\\Data\\query", func_get_args() );
         $row = $stm->fetch();
-        if( !$row ) throw new Exception('[Data] There is no data!', NOT_FOUND);
+        if( !$row ) throw new \Exception('[Data] There is no data!', NOT_FOUND);
         return $row;
     }
     function exec() {
         global $DB;
-        call_user_func_array( query, func_get_args() );
-        return $DB->lastId;
+        \call_user_func_array( "\\Data\\query", func_get_args() );
+        return $DB->lastId();
     }
 }
 namespace Data\User {
@@ -58,7 +43,6 @@ namespace Data\User {
         return $DB->table('user');
     }
     function all() {
-        global $DB;
         $stm = \Data\query('SELECT id FROM' . \Data\User\name());
         $ids = [];
         while( null != ($row = $stm->fetch()) ) {
@@ -67,7 +51,6 @@ namespace Data\User {
         return $ids;
     }
     function get( $id ) {
-        global $DB;
         $row = \Data\fetch('SELECT * FROM' . \Data\User\name() . 'WHERE id=?', $id );
         return ['id' => intVal($row['id']),
                 'dashboard' => $row['dashboard'],
@@ -80,7 +63,6 @@ namespace Data\User {
                 'data' => $row['data']];
     }
     function add( $fields ) {
-        global $DB;
         return \Data\exec(
             'INSERT INTO' . \Data\User\name() . '(`dashboard`,`login`,`password`,`name`,`roles`,`enabled`,`creation`,`data`)'
           . 'VALUES(?,?,?,?,?,?,?,?)',
@@ -94,7 +76,6 @@ namespace Data\User {
             $fields['data']);
     }
     function upd( $id, $values ) {
-        global $DB;
         \Data\exec(
             'UPDATE' . \Data\User\name()
           . 'SET `dashboard`=?,,`login`=?,,`password`=?,,`name`=?,,`roles`=?,,`enabled`=?,,`creation`=?,,`data`=? '
@@ -110,30 +91,69 @@ namespace Data\User {
             $values['data']);
     }
     function del( $id ) {
-        global $DB;
         \Data\exec( 'DELETE FROM' . \Data\User\name() . 'WHERE id=?', $id );
     }
     function getOrganizations( $id ) {
         global $DB;
         $stm = \Data\query(
-            'SELECT id FROM' . \Data\Organization\name()
-          . 'WHERE `admins`=?', $id);
+            'SELECT `Organization` FROM' . $DB->table('Organization_User')
+          . 'WHERE `User`=?', $id);
         $ids = [];
         while( null != ($row = $stm->fetch()) ) {
             $ids[] = intVal($row[0]);
         }
         return $ids;
     }
+    function linkOrganizations( $id, $idOrganization ) {
+        global $DB;
+        \Data\query(
+            'INSERT INTO' . $DB->table('Organization_User')
+          . '(`User`, `Organization`)'
+          . 'VALUES(?,?)', $id, $idOrganization);
+    }
+    function unlinkOrganizations( $id, $idOrganization=null ) {
+        global $DB;
+        if( $idOrganization == null ) {
+          \Data\query(
+              'DELETE FROM' . $DB->table('Organization_User')
+            . 'WHERE `User`=?', $id);
+        }
+        else {
+          \Data\query(
+              'DELETE FROM' . $DB->table('Organization_User')
+            . 'WHERE `User`=? AND `Organization`=?', $id, $idOrganization);
+        }
+    }
     function getCarecenters( $id ) {
         global $DB;
         $stm = \Data\query(
-            'SELECT id FROM' . \Data\Carecenter\name()
-          . 'WHERE `admins`=?', $id);
+            'SELECT `Carecenter` FROM' . $DB->table('Carecenter_User')
+          . 'WHERE `User`=?', $id);
         $ids = [];
         while( null != ($row = $stm->fetch()) ) {
             $ids[] = intVal($row[0]);
         }
         return $ids;
+    }
+    function linkCarecenters( $id, $idCarecenter ) {
+        global $DB;
+        \Data\query(
+            'INSERT INTO' . $DB->table('Carecenter_User')
+          . '(`User`, `Carecenter`)'
+          . 'VALUES(?,?)', $id, $idCarecenter);
+    }
+    function unlinkCarecenters( $id, $idCarecenter=null ) {
+        global $DB;
+        if( $idCarecenter == null ) {
+          \Data\query(
+              'DELETE FROM' . $DB->table('Carecenter_User')
+            . 'WHERE `User`=?', $id);
+        }
+        else {
+          \Data\query(
+              'DELETE FROM' . $DB->table('Carecenter_User')
+            . 'WHERE `User`=? AND `Carecenter`=?', $id, $idCarecenter);
+        }
     }
 }
 namespace Data\Organization {
@@ -142,7 +162,6 @@ namespace Data\Organization {
         return $DB->table('organization');
     }
     function all() {
-        global $DB;
         $stm = \Data\query('SELECT id FROM' . \Data\Organization\name());
         $ids = [];
         while( null != ($row = $stm->fetch()) ) {
@@ -151,20 +170,17 @@ namespace Data\Organization {
         return $ids;
     }
     function get( $id ) {
-        global $DB;
         $row = \Data\fetch('SELECT * FROM' . \Data\Organization\name() . 'WHERE id=?', $id );
         return ['id' => intVal($row['id']),
                 'name' => $row['name']];
     }
     function add( $fields ) {
-        global $DB;
         return \Data\exec(
             'INSERT INTO' . \Data\Organization\name() . '(`name`)'
           . 'VALUES(?)',
             $fields['name']);
     }
     function upd( $id, $values ) {
-        global $DB;
         \Data\exec(
             'UPDATE' . \Data\Organization\name()
           . 'SET `name`=? '
@@ -173,11 +189,9 @@ namespace Data\Organization {
             $values['name']);
     }
     function del( $id ) {
-        global $DB;
         \Data\exec( 'DELETE FROM' . \Data\Organization\name() . 'WHERE id=?', $id );
     }
     function getCarecenters( $id ) {
-        global $DB;
         $stm = \Data\query(
             'SELECT id FROM' . \Data\Carecenter\name()
           . 'WHERE `organization`=?', $id);
@@ -188,7 +202,6 @@ namespace Data\Organization {
         return $ids;
     }
     function getStructures( $id ) {
-        global $DB;
         $stm = \Data\query(
             'SELECT id FROM' . \Data\Structure\name()
           . 'WHERE `organization`=?', $id);
@@ -201,13 +214,33 @@ namespace Data\Organization {
     function getAdmins( $id ) {
         global $DB;
         $stm = \Data\query(
-            'SELECT id FROM' . \Data\User\name()
-          . 'WHERE `organizations`=?', $id);
+            'SELECT `User` FROM' . $DB->table('Organization_User')
+          . 'WHERE `Organization`=?', $id);
         $ids = [];
         while( null != ($row = $stm->fetch()) ) {
             $ids[] = intVal($row[0]);
         }
         return $ids;
+    }
+    function linkAdmins( $id, $idUser ) {
+        global $DB;
+        \Data\query(
+            'INSERT INTO' . $DB->table('Organization_User')
+          . '(`Organization`, `User`)'
+          . 'VALUES(?,?)', $id, $idUser);
+    }
+    function unlinkAdmins( $id, $idUser=null ) {
+        global $DB;
+        if( $idUser == null ) {
+          \Data\query(
+              'DELETE FROM' . $DB->table('Organization_User')
+            . 'WHERE `Organization`=?', $id);
+        }
+        else {
+          \Data\query(
+              'DELETE FROM' . $DB->table('Organization_User')
+            . 'WHERE `Organization`=? AND `User`=?', $id, $idUser);
+        }
     }
 }
 namespace Data\Carecenter {
@@ -216,7 +249,6 @@ namespace Data\Carecenter {
         return $DB->table('carecenter');
     }
     function all() {
-        global $DB;
         $stm = \Data\query('SELECT id FROM' . \Data\Carecenter\name());
         $ids = [];
         while( null != ($row = $stm->fetch()) ) {
@@ -225,20 +257,17 @@ namespace Data\Carecenter {
         return $ids;
     }
     function get( $id ) {
-        global $DB;
         $row = \Data\fetch('SELECT * FROM' . \Data\Carecenter\name() . 'WHERE id=?', $id );
         return ['id' => intVal($row['id']),
                 'name' => $row['name']];
     }
     function add( $fields ) {
-        global $DB;
         return \Data\exec(
             'INSERT INTO' . \Data\Carecenter\name() . '(`name`)'
           . 'VALUES(?)',
             $fields['name']);
     }
     function upd( $id, $values ) {
-        global $DB;
         \Data\exec(
             'UPDATE' . \Data\Carecenter\name()
           . 'SET `name`=? '
@@ -247,18 +276,15 @@ namespace Data\Carecenter {
             $values['name']);
     }
     function del( $id ) {
-        global $DB;
         \Data\exec( 'DELETE FROM' . \Data\Carecenter\name() . 'WHERE id=?', $id );
     }
     function getOrganization( $id ) {
-        global $DB;
         $row = \Data\fetch(
             'SELECT `organization` FROM' . \Data\Carecenter\name()
           . 'WHERE id=?', $id);
         return intVal($row[0]);
     }
     function getStructure( $id ) {
-        global $DB;
         $row = \Data\fetch(
             'SELECT `structure` FROM' . \Data\Carecenter\name()
           . 'WHERE id=?', $id);
@@ -267,13 +293,33 @@ namespace Data\Carecenter {
     function getAdmins( $id ) {
         global $DB;
         $stm = \Data\query(
-            'SELECT id FROM' . \Data\User\name()
-          . 'WHERE `carecenters`=?', $id);
+            'SELECT `User` FROM' . $DB->table('Carecenter_User')
+          . 'WHERE `Carecenter`=?', $id);
         $ids = [];
         while( null != ($row = $stm->fetch()) ) {
             $ids[] = intVal($row[0]);
         }
         return $ids;
+    }
+    function linkAdmins( $id, $idUser ) {
+        global $DB;
+        \Data\query(
+            'INSERT INTO' . $DB->table('Carecenter_User')
+          . '(`Carecenter`, `User`)'
+          . 'VALUES(?,?)', $id, $idUser);
+    }
+    function unlinkAdmins( $id, $idUser=null ) {
+        global $DB;
+        if( $idUser == null ) {
+          \Data\query(
+              'DELETE FROM' . $DB->table('Carecenter_User')
+            . 'WHERE `Carecenter`=?', $id);
+        }
+        else {
+          \Data\query(
+              'DELETE FROM' . $DB->table('Carecenter_User')
+            . 'WHERE `Carecenter`=? AND `User`=?', $id, $idUser);
+        }
     }
 }
 namespace Data\Structure {
@@ -282,7 +328,6 @@ namespace Data\Structure {
         return $DB->table('structure');
     }
     function all() {
-        global $DB;
         $stm = \Data\query('SELECT id FROM' . \Data\Structure\name());
         $ids = [];
         while( null != ($row = $stm->fetch()) ) {
@@ -291,7 +336,6 @@ namespace Data\Structure {
         return $ids;
     }
     function get( $id ) {
-        global $DB;
         $row = \Data\fetch('SELECT * FROM' . \Data\Structure\name() . 'WHERE id=?', $id );
         return ['id' => intVal($row['id']),
                 'name' => $row['name'],
@@ -302,7 +346,6 @@ namespace Data\Structure {
                 'types' => $row['types']];
     }
     function add( $fields ) {
-        global $DB;
         return \Data\exec(
             'INSERT INTO' . \Data\Structure\name() . '(`name`,`exams`,`vaccins`,`patient`,`forms`,`types`)'
           . 'VALUES(?,?,?,?,?,?)',
@@ -314,7 +357,6 @@ namespace Data\Structure {
             $fields['types']);
     }
     function upd( $id, $values ) {
-        global $DB;
         \Data\exec(
             'UPDATE' . \Data\Structure\name()
           . 'SET `name`=?,,`exams`=?,,`vaccins`=?,,`patient`=?,,`forms`=?,,`types`=? '
@@ -328,18 +370,15 @@ namespace Data\Structure {
             $values['types']);
     }
     function del( $id ) {
-        global $DB;
         \Data\exec( 'DELETE FROM' . \Data\Structure\name() . 'WHERE id=?', $id );
     }
     function getOrganization( $id ) {
-        global $DB;
         $row = \Data\fetch(
             'SELECT `organization` FROM' . \Data\Structure\name()
           . 'WHERE id=?', $id);
         return intVal($row[0]);
     }
     function getCarecenters( $id ) {
-        global $DB;
         $stm = \Data\query(
             'SELECT id FROM' . \Data\Carecenter\name()
           . 'WHERE `structure`=?', $id);
@@ -356,7 +395,6 @@ namespace Data\Patient {
         return $DB->table('patient');
     }
     function all() {
-        global $DB;
         $stm = \Data\query('SELECT id FROM' . \Data\Patient\name());
         $ids = [];
         while( null != ($row = $stm->fetch()) ) {
@@ -365,20 +403,17 @@ namespace Data\Patient {
         return $ids;
     }
     function get( $id ) {
-        global $DB;
         $row = \Data\fetch('SELECT * FROM' . \Data\Patient\name() . 'WHERE id=?', $id );
         return ['id' => intVal($row['id']),
                 'key' => $row['key']];
     }
     function add( $fields ) {
-        global $DB;
         return \Data\exec(
             'INSERT INTO' . \Data\Patient\name() . '(`key`)'
           . 'VALUES(?)',
             $fields['key']);
     }
     function upd( $id, $values ) {
-        global $DB;
         \Data\exec(
             'UPDATE' . \Data\Patient\name()
           . 'SET `key`=? '
@@ -387,11 +422,9 @@ namespace Data\Patient {
             $values['key']);
     }
     function del( $id ) {
-        global $DB;
         \Data\exec( 'DELETE FROM' . \Data\Patient\name() . 'WHERE id=?', $id );
     }
     function getAdmissions( $id ) {
-        global $DB;
         $stm = \Data\query(
             'SELECT id FROM' . \Data\Admission\name()
           . 'WHERE `patient`=?', $id);
@@ -402,7 +435,6 @@ namespace Data\Patient {
         return $ids;
     }
     function getAttachments( $id ) {
-        global $DB;
         $stm = \Data\query(
             'SELECT id FROM' . \Data\Attachment\name()
           . 'WHERE `patient`=?', $id);
@@ -413,7 +445,6 @@ namespace Data\Patient {
         return $ids;
     }
     function getVaccins( $id ) {
-        global $DB;
         $stm = \Data\query(
             'SELECT id FROM' . \Data\Vaccin\name()
           . 'WHERE `patient`=?', $id);
@@ -430,7 +461,6 @@ namespace Data\PatientField {
         return $DB->table('patientField');
     }
     function all() {
-        global $DB;
         $stm = \Data\query('SELECT id FROM' . \Data\PatientField\name());
         $ids = [];
         while( null != ($row = $stm->fetch()) ) {
@@ -439,14 +469,12 @@ namespace Data\PatientField {
         return $ids;
     }
     function get( $id ) {
-        global $DB;
         $row = \Data\fetch('SELECT * FROM' . \Data\PatientField\name() . 'WHERE id=?', $id );
         return ['id' => intVal($row['id']),
                 'key' => $row['key'],
                 'value' => $row['value']];
     }
     function add( $fields ) {
-        global $DB;
         return \Data\exec(
             'INSERT INTO' . \Data\PatientField\name() . '(`key`,`value`)'
           . 'VALUES(?,?)',
@@ -454,7 +482,6 @@ namespace Data\PatientField {
             $fields['value']);
     }
     function upd( $id, $values ) {
-        global $DB;
         \Data\exec(
             'UPDATE' . \Data\PatientField\name()
           . 'SET `key`=?,,`value`=? '
@@ -464,7 +491,6 @@ namespace Data\PatientField {
             $values['value']);
     }
     function del( $id ) {
-        global $DB;
         \Data\exec( 'DELETE FROM' . \Data\PatientField\name() . 'WHERE id=?', $id );
     }
 }
@@ -474,7 +500,6 @@ namespace Data\File {
         return $DB->table('file');
     }
     function all() {
-        global $DB;
         $stm = \Data\query('SELECT id FROM' . \Data\File\name());
         $ids = [];
         while( null != ($row = $stm->fetch()) ) {
@@ -483,7 +508,6 @@ namespace Data\File {
         return $ids;
     }
     function get( $id ) {
-        global $DB;
         $row = \Data\fetch('SELECT * FROM' . \Data\File\name() . 'WHERE id=?', $id );
         return ['id' => intVal($row['id']),
                 'name' => $row['name'],
@@ -492,7 +516,6 @@ namespace Data\File {
                 'size' => $row['size']];
     }
     function add( $fields ) {
-        global $DB;
         return \Data\exec(
             'INSERT INTO' . \Data\File\name() . '(`name`,`hash`,`mime`,`size`)'
           . 'VALUES(?,?,?,?)',
@@ -502,7 +525,6 @@ namespace Data\File {
             $fields['size']);
     }
     function upd( $id, $values ) {
-        global $DB;
         \Data\exec(
             'UPDATE' . \Data\File\name()
           . 'SET `name`=?,,`hash`=?,,`mime`=?,,`size`=? '
@@ -514,7 +536,6 @@ namespace Data\File {
             $values['size']);
     }
     function del( $id ) {
-        global $DB;
         \Data\exec( 'DELETE FROM' . \Data\File\name() . 'WHERE id=?', $id );
     }
 }
@@ -524,7 +545,6 @@ namespace Data\Admission {
         return $DB->table('admission');
     }
     function all() {
-        global $DB;
         $stm = \Data\query('SELECT id FROM' . \Data\Admission\name());
         $ids = [];
         while( null != ($row = $stm->fetch()) ) {
@@ -533,14 +553,12 @@ namespace Data\Admission {
         return $ids;
     }
     function get( $id ) {
-        global $DB;
         $row = \Data\fetch('SELECT * FROM' . \Data\Admission\name() . 'WHERE id=?', $id );
         return ['id' => intVal($row['id']),
                 'enter' => $row['enter'],
                 'exit' => $row['exit']];
     }
     function add( $fields ) {
-        global $DB;
         return \Data\exec(
             'INSERT INTO' . \Data\Admission\name() . '(`enter`,`exit`)'
           . 'VALUES(?,?)',
@@ -548,7 +566,6 @@ namespace Data\Admission {
             $fields['exit']);
     }
     function upd( $id, $values ) {
-        global $DB;
         \Data\exec(
             'UPDATE' . \Data\Admission\name()
           . 'SET `enter`=?,,`exit`=? '
@@ -558,18 +575,15 @@ namespace Data\Admission {
             $values['exit']);
     }
     function del( $id ) {
-        global $DB;
         \Data\exec( 'DELETE FROM' . \Data\Admission\name() . 'WHERE id=?', $id );
     }
     function getPatient( $id ) {
-        global $DB;
         $row = \Data\fetch(
             'SELECT `patient` FROM' . \Data\Admission\name()
           . 'WHERE id=?', $id);
         return intVal($row[0]);
     }
     function getConsultations( $id ) {
-        global $DB;
         $stm = \Data\query(
             'SELECT id FROM' . \Data\Consultation\name()
           . 'WHERE `admission`=?', $id);
@@ -586,7 +600,6 @@ namespace Data\Consultation {
         return $DB->table('consultation');
     }
     function all() {
-        global $DB;
         $stm = \Data\query('SELECT id FROM' . \Data\Consultation\name());
         $ids = [];
         while( null != ($row = $stm->fetch()) ) {
@@ -595,20 +608,17 @@ namespace Data\Consultation {
         return $ids;
     }
     function get( $id ) {
-        global $DB;
         $row = \Data\fetch('SELECT * FROM' . \Data\Consultation\name() . 'WHERE id=?', $id );
         return ['id' => intVal($row['id']),
                 'date' => $row['date']];
     }
     function add( $fields ) {
-        global $DB;
         return \Data\exec(
             'INSERT INTO' . \Data\Consultation\name() . '(`date`)'
           . 'VALUES(?)',
             $fields['date']);
     }
     function upd( $id, $values ) {
-        global $DB;
         \Data\exec(
             'UPDATE' . \Data\Consultation\name()
           . 'SET `date`=? '
@@ -617,18 +627,15 @@ namespace Data\Consultation {
             $values['date']);
     }
     function del( $id ) {
-        global $DB;
         \Data\exec( 'DELETE FROM' . \Data\Consultation\name() . 'WHERE id=?', $id );
     }
     function getAdmission( $id ) {
-        global $DB;
         $row = \Data\fetch(
             'SELECT `admission` FROM' . \Data\Consultation\name()
           . 'WHERE id=?', $id);
         return intVal($row[0]);
     }
     function getDatas( $id ) {
-        global $DB;
         $stm = \Data\query(
             'SELECT id FROM' . \Data\Data\name()
           . 'WHERE `consultation`=?', $id);
@@ -645,7 +652,6 @@ namespace Data\Data {
         return $DB->table('data');
     }
     function all() {
-        global $DB;
         $stm = \Data\query('SELECT id FROM' . \Data\Data\name());
         $ids = [];
         while( null != ($row = $stm->fetch()) ) {
@@ -654,14 +660,12 @@ namespace Data\Data {
         return $ids;
     }
     function get( $id ) {
-        global $DB;
         $row = \Data\fetch('SELECT * FROM' . \Data\Data\name() . 'WHERE id=?', $id );
         return ['id' => intVal($row['id']),
                 'key' => $row['key'],
                 'value' => $row['value']];
     }
     function add( $fields ) {
-        global $DB;
         return \Data\exec(
             'INSERT INTO' . \Data\Data\name() . '(`key`,`value`)'
           . 'VALUES(?,?)',
@@ -669,7 +673,6 @@ namespace Data\Data {
             $fields['value']);
     }
     function upd( $id, $values ) {
-        global $DB;
         \Data\exec(
             'UPDATE' . \Data\Data\name()
           . 'SET `key`=?,,`value`=? '
@@ -679,11 +682,9 @@ namespace Data\Data {
             $values['value']);
     }
     function del( $id ) {
-        global $DB;
         \Data\exec( 'DELETE FROM' . \Data\Data\name() . 'WHERE id=?', $id );
     }
     function getConsultation( $id ) {
-        global $DB;
         $row = \Data\fetch(
             'SELECT `consultation` FROM' . \Data\Data\name()
           . 'WHERE id=?', $id);
@@ -696,7 +697,6 @@ namespace Data\Shapshot {
         return $DB->table('shapshot');
     }
     function all() {
-        global $DB;
         $stm = \Data\query('SELECT id FROM' . \Data\Shapshot\name());
         $ids = [];
         while( null != ($row = $stm->fetch()) ) {
@@ -705,14 +705,12 @@ namespace Data\Shapshot {
         return $ids;
     }
     function get( $id ) {
-        global $DB;
         $row = \Data\fetch('SELECT * FROM' . \Data\Shapshot\name() . 'WHERE id=?', $id );
         return ['id' => intVal($row['id']),
                 'key' => $row['key'],
                 'value' => $row['value']];
     }
     function add( $fields ) {
-        global $DB;
         return \Data\exec(
             'INSERT INTO' . \Data\Shapshot\name() . '(`key`,`value`)'
           . 'VALUES(?,?)',
@@ -720,7 +718,6 @@ namespace Data\Shapshot {
             $fields['value']);
     }
     function upd( $id, $values ) {
-        global $DB;
         \Data\exec(
             'UPDATE' . \Data\Shapshot\name()
           . 'SET `key`=?,,`value`=? '
@@ -730,7 +727,6 @@ namespace Data\Shapshot {
             $values['value']);
     }
     function del( $id ) {
-        global $DB;
         \Data\exec( 'DELETE FROM' . \Data\Shapshot\name() . 'WHERE id=?', $id );
     }
 }
@@ -740,7 +736,6 @@ namespace Data\Attachment {
         return $DB->table('attachment');
     }
     function all() {
-        global $DB;
         $stm = \Data\query('SELECT id FROM' . \Data\Attachment\name());
         $ids = [];
         while( null != ($row = $stm->fetch()) ) {
@@ -749,7 +744,6 @@ namespace Data\Attachment {
         return $ids;
     }
     function get( $id ) {
-        global $DB;
         $row = \Data\fetch('SELECT * FROM' . \Data\Attachment\name() . 'WHERE id=?', $id );
         return ['id' => intVal($row['id']),
                 'name' => $row['name'],
@@ -758,7 +752,6 @@ namespace Data\Attachment {
                 'mime' => $row['mime']];
     }
     function add( $fields ) {
-        global $DB;
         return \Data\exec(
             'INSERT INTO' . \Data\Attachment\name() . '(`name`,`desc`,`date`,`mime`)'
           . 'VALUES(?,?,?,?)',
@@ -768,7 +761,6 @@ namespace Data\Attachment {
             $fields['mime']);
     }
     function upd( $id, $values ) {
-        global $DB;
         \Data\exec(
             'UPDATE' . \Data\Attachment\name()
           . 'SET `name`=?,,`desc`=?,,`date`=?,,`mime`=? '
@@ -780,11 +772,9 @@ namespace Data\Attachment {
             $values['mime']);
     }
     function del( $id ) {
-        global $DB;
         \Data\exec( 'DELETE FROM' . \Data\Attachment\name() . 'WHERE id=?', $id );
     }
     function getPatient( $id ) {
-        global $DB;
         $row = \Data\fetch(
             'SELECT `patient` FROM' . \Data\Attachment\name()
           . 'WHERE id=?', $id);
@@ -797,7 +787,6 @@ namespace Data\Vaccin {
         return $DB->table('vaccin');
     }
     function all() {
-        global $DB;
         $stm = \Data\query('SELECT id FROM' . \Data\Vaccin\name());
         $ids = [];
         while( null != ($row = $stm->fetch()) ) {
@@ -806,7 +795,6 @@ namespace Data\Vaccin {
         return $ids;
     }
     function get( $id ) {
-        global $DB;
         $row = \Data\fetch('SELECT * FROM' . \Data\Vaccin\name() . 'WHERE id=?', $id );
         return ['id' => intVal($row['id']),
                 'key' => $row['key'],
@@ -814,7 +802,6 @@ namespace Data\Vaccin {
                 'lot' => $row['lot']];
     }
     function add( $fields ) {
-        global $DB;
         return \Data\exec(
             'INSERT INTO' . \Data\Vaccin\name() . '(`key`,`date`,`lot`)'
           . 'VALUES(?,?,?)',
@@ -823,7 +810,6 @@ namespace Data\Vaccin {
             $fields['lot']);
     }
     function upd( $id, $values ) {
-        global $DB;
         \Data\exec(
             'UPDATE' . \Data\Vaccin\name()
           . 'SET `key`=?,,`date`=?,,`lot`=? '
@@ -834,11 +820,9 @@ namespace Data\Vaccin {
             $values['lot']);
     }
     function del( $id ) {
-        global $DB;
         \Data\exec( 'DELETE FROM' . \Data\Vaccin\name() . 'WHERE id=?', $id );
     }
     function getPatient( $id ) {
-        global $DB;
         $row = \Data\fetch(
             'SELECT `patient` FROM' . \Data\Vaccin\name()
           . 'WHERE id=?', $id);

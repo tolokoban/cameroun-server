@@ -17,6 +17,7 @@ var Logout = require("soin.view.panel.logout");
 var SvcOrga = require("soin.svc-orga");
 
 
+var g_viewLogout;
 var g_organizations;
 
 
@@ -45,6 +46,7 @@ function addPanelLogout( organizations ) {
     userName: WS.userName,
     organizations: organizations
   });
+  g_viewLogout = logout;
   var pm = PM( logout );
   pm.on( "actionLogout", actionLogout );
   pm.on( "actionNewOrga", actionNewOrga );
@@ -79,7 +81,17 @@ function actionNewOrga() {
  */
 function createOrga( view ) {
   if( !checkOrganizationName( view.name ) ) return;
-  
+  var wait = Dialog.wait(_("adding-orga"));
+  var name = view.name.trim();
+  SvcOrga.add( name ).then(function( orgaId ) {
+    wait.detach();
+    g_organizations.push({
+      id: orgaId,
+      name: name,
+      carecenters: []
+    });
+    updateOrganizations();
+  }, wait.detach.bind( wait ));
 }
 
 
@@ -111,4 +123,13 @@ function alertNameTooShort( name ) {
 function alertOrganizationNameAlreadyExist( name ) {
   Dialog.alert( _('orga-already-exist', name) );
   return false;
+}
+
+
+/**
+ * @param {object} organizations - `[{id, name, carecenters:[{id, name}, ...]}, ...]`
+ */
+function updateOrganizations( organizations ) {
+  if( typeof organizations !== 'undefined' ) g_organizations = organizations;
+  g_viewLogout.organizations = g_organizations;
 }

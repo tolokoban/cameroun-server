@@ -8,12 +8,20 @@
  */
 exports.edit = edit;
 /**
- * @param {string} message
+ * @param {string} args
+ * @param {function} args.action
+ * @param {string} args.content
  */
 exports.alert = alert;
+/**
+ * @param {string} message
+ */
+exports.wait = wait;
 
 //############################################################
 
+var $ = require("dom");
+var Wait = require("wdg.wait");
 var Button = require("tfw.view.button");
 var Dialog = require("wdg.modal");
 
@@ -53,11 +61,29 @@ function edit(args) {
 }
 
 
-function alert( message ) {
+function alert( args ) {
+  if( typeof args === 'string' ) args = { content: args };
+
   var btnCancel = new Button({ text: _("gotit"), flat: true });
   var dialog = new Dialog({
-    content: message,
+    content: args.content,
     footer: [btnCancel]
+  });
+  dialog.attach();
+  btnCancel.on(function() {
+    dialog.detach();
+    if( typeof args.action === 'function' ) args.action( args.content );
+  });
+  return dialog;
+}
+
+
+function wait( message ) {
+  var dialog = new Dialog({
+    content: $.div('soin-dialog-wait', [
+      new Wait({ size: 32 }),
+      message
+    ])
   });
   dialog.attach();
   return dialog;
