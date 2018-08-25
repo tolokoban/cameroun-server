@@ -2,6 +2,7 @@
 
 /**
  * No param.
+ * @resolve `[{id, name, carecenters:[{id, name}, ...]}, ...]`.
  */
 exports.list = list;
 /**
@@ -9,6 +10,18 @@ exports.list = list;
  * @resolve {number} ID of the new organization.
  */
 exports.add = add;
+/**
+ * @param {number} id
+ * @param {string} name
+ */
+exports.rename = rename;
+/**
+ * @param {number} id
+ */
+exports.delete = del;
+
+exports.NOT_GRANTED = 1;
+exports.UNKNOWN_ERROR = 2;
 
 //############################################################
 
@@ -28,6 +41,40 @@ function add( name ) {
   return new Promise(function (resolve, reject) {
     WebService.get("orga.add", { name: name }).then(function(orgaId) {
       resolve( orgaId );
+    }, reject);
+  });
+}
+
+
+function rename( id, name ) {
+  return new Promise(function (resolve, reject) {
+    WebService.get("orga.rename", { id: id, name: name }).then(function(retcode) {
+      switch( retcode ) {
+      case 0:
+        resolve(); break;
+      case -1:
+        reject( exports.NOT_GRANTED ); break;
+      default:
+        console.error("Unknown error: ", retcode);
+        reject( exports.UNKNOWN_ERROR );
+      }
+    }, reject);
+  });
+}
+
+
+function del( id ) {
+  return new Promise(function (resolve, reject) {
+    WebService.get("orga.delete", { id: id }).then(function(retcode) {
+      switch( retcode ) {
+      case 0:
+        resolve(); break;
+      case -1:
+        reject( exports.NOT_GRANTED ); break;
+      default:
+        console.error("Unknown error: ", retcode);
+        reject( exports.UNKNOWN_ERROR );
+      }
     }, reject);
   });
 }

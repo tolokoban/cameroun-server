@@ -2,8 +2,12 @@
   view.attribs: {
     user-name: {string}
     organizations: {array []}
+    action-refresh: {action behind:onRefresh}
+    action-uptodate: {action}
     action-logout: {action}
     action-new-orga: {action}
+    action-del-orga: {action}
+    action-show-structures: {action}
   }
 
   [

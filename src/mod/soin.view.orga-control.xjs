@@ -1,0 +1,19 @@
+{View DIV class:soin-view-orga-control
+  view.attribs: {
+    id: {integer}
+    name: {string}
+    carecenters: {array}
+    action-delete: {action}
+    action-show-structures: {action}
+  }
+
+  [
+    {DIV class:flex [
+      {tfw.view.button icon:edit text:{Intl rename} type:primary on.action:onRename}
+      {tfw.view.button icon:delete text:{Intl delete} type:secondary on.action:onDelete}
+    ]}
+    {tfw.view.button icon:show text:{Intl structures} flat:true
+                     tag:{Bind id}
+                     action:{Bind action-show-structures}}
+  ]
+}

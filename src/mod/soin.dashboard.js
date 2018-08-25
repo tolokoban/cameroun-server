@@ -15,8 +15,11 @@ var Dialog = require("soin.dialog");
 var Splash = require("soin.splash");
 var Logout = require("soin.view.panel.logout");
 var SvcOrga = require("soin.svc-orga");
+var Structures = require("soin.view.panel.structures");
+var SvcDashboard = require("soin.svc-dashboard");
 
 
+var g_dashboard = { options: {}, panels: [] };
 var g_viewLogout;
 var g_organizations;
 
@@ -32,7 +35,11 @@ function clear() {
 function refresh() {
   return new Promise(function (resolve, reject) {
     clear();
-    SvcOrga.list().then(function( organizations ) {
+    SvcDashboard.get().then(function( dashboard ) {
+      g_dashboard = dashboard;
+      console.info("[soin.dashboard] dashboard=", dashboard);
+      return SvcOrga.list();
+    }).then(function( organizations ) {
       g_organizations = organizations;
       addPanelLogout( organizations );
       resolve();
@@ -49,7 +56,9 @@ function addPanelLogout( organizations ) {
   g_viewLogout = logout;
   var pm = PM( logout );
   pm.on( "actionLogout", actionLogout );
+  pm.on( "actionShowStructures", actionShowStructures );
   pm.on( "actionNewOrga", actionNewOrga );
+  pm.on( "actionDelOrga", actionDelOrga );
   var panel = new Panel({ content: logout });
   $.add( document.body, panel );
 }
@@ -65,6 +74,19 @@ function actionLogout() {
 }
 
 
+function actionShowStructures( orgaId ) {
+  var orgas = g_organizations.filter(function( orga ) {
+    return orga.id == orgaId;
+  });
+  var orgaName = orgas[0].name;
+
+  var view = new Structures({ id: orgaId, name: orgaName });
+  var panel = new Panel({ content: view, pinned: false });
+  $.add( document.body, panel );
+  panel.refresh();
+}
+
+
 function actionNewOrga() {
   var OrgaView = require("soin.view.orga");
   var view = new OrgaView();
@@ -73,6 +95,18 @@ function actionNewOrga() {
     content: view,
     action: createOrga.bind( view )
   });
+}
+
+
+/**
+ * The orga is already deleted in the database. We just need to remove
+ * it from display.
+ */
+function actionDelOrga( orgaId ) {
+  g_organizations = g_organizations.filter(function( orga ) {
+    return orga.id != orgaId;
+  });
+  updateOrganizations();
 }
 
 

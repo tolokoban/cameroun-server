@@ -15,6 +15,7 @@ exports.edit = edit;
 exports.alert = alert;
 /**
  * @param {string} message
+ * @param {promise=undefined} promise
  */
 exports.wait = wait;
 
@@ -78,7 +79,7 @@ function alert( args ) {
 }
 
 
-function wait( message ) {
+function wait( message, promise ) {
   var dialog = new Dialog({
     content: $.div('soin-dialog-wait', [
       new Wait({ size: 32 }),
@@ -86,5 +87,19 @@ function wait( message ) {
     ])
   });
   dialog.attach();
+  
+  if( promise && typeof promise.then === 'function' ) {
+    return new Promise(function (resolve, reject) {
+      promise.then(function() {
+        var args = Array.prototype.slice.call( arguments );
+        dialog.detach();
+        resolve.apply(null, args);
+      }, function() {
+        var args = Array.prototype.slice.call( arguments );
+        dialog.detach();
+        reject.apply(null, args);
+      });
+    });
+  }
   return dialog;
 }

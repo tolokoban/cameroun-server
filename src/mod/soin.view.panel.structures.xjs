@@ -1,0 +1,19 @@
+{View DIV class:"soin-view-panel-structures"
+  view.attribs: {
+    id: {integer}  // Organization's id.
+    name: {string}  // Organization's name.
+    structures: {list []}
+    action-refresh: {action behind:onRefresh}
+    action-uptodate: {action}
+  }
+
+  [
+    {DIV class:flex [
+      {DIV class:label textcontent:{Intl orga}}
+      {DIV textcontent:{Bind name}}
+    ]}
+    {HR}
+    {tfw.view.button text:{Intl add-structure} type:primary icon:add on.action:onAddStructure}
+    {DIV view.children:{Bind structures map:mapStructure, header:header}}
+  ]
+}

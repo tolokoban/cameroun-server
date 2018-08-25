@@ -1,0 +1,10 @@
+{View DIV class:soin-view-structure
+  view.attribs: {
+    name: {string}
+    focus: {boolean true}
+  }
+
+  [
+    {tfw.view.textbox label:{Intl structure-name} wide:true value:{Bind name} focus:{Bind focus}}
+  ]
+}

@@ -1,7 +1,11 @@
 {View DIV class:"soin-view-panel thm-bgPD thm-ele8"
   view.attribs: {
-    content: any
+    content: {any behind:onContentChanged}
+    pinned: {boolean true}    
   }
+
+  class.pinned: {Bind pinned}
+  view.prototype: refresh
 
   [
     {DIV [
@@ -17,6 +21,10 @@
           {PATH fill:none stroke:#420 stroke-width:8
                 d:"M-10,10 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20 l20,-20 l20,20"}
         ]}
+      ]}
+      {DIV class:flex [
+        {tfw.view.floating-button icon:refresh small:true type:S}
+        {tfw.view.floating-button icon:close small:true type:S}
       ]}
     ]}
     {SECTION view.children:{Bind content}}

@@ -2,27 +2,44 @@
 "use strict";
 
 var CODE_BEHIND = {
+  onRefresh: onRefresh,
   mapOrga: mapOrga,
   mapOrgaHeader: mapOrgaHeader
 };
 
 
 var $ = require("dom");
+var PM = require("tfw.binding.property-manager");
 var Button = require("tfw.view.button");
 var Expand = require("tfw.view.expand");
+var OrgaControl = require("soin.view.orga-control");
+
+
+function onRefresh() {
+  var that = this;
+
+  window.setTimeout(function() {
+    that.actionUptodate = 1;
+  });
+}
+
 
 function mapOrga( orga, more ) {
-  var root = more.context.root;
-  var btnRename = new Button({
-    text: _('rename'), icon: 'edit', type: 'primary'
+  var that = this;
+
+  var content = new OrgaControl( orga );
+  var expand = new Expand({ label: orga.name, content: content });
+  var pm = PM( content );
+  pm.on('name', function(v) {
+    expand.label = v;
   });
-  var btnDelete = new Button({
-    text: _('delete'), icon: 'delete', type: 'secondary'
+  pm.on('actionDelete', function( id ) {
+    that.actionDelOrga = id;
   });
-  var content = $.div('main-flex', [
-    btnRename, btnDelete
-  ]);
-  return new Expand({ label: orga.name, content: content });
+  pm.on('actionShowStructures', function( id ) {
+    that.actionShowStructures = id;
+  });
+  return expand;
 }
 
 
