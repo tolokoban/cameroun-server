@@ -16,6 +16,7 @@ var Expand = require("tfw.view.expand");
 var Dialog = require("soin.dialog");
 var Structure = require("soin.view.structure");
 var SvcStructure = require("soin.svc-structure");
+var StructureControl = require("soin.view.structure-control");
 
 
 function onRefresh() {
@@ -62,7 +63,8 @@ function existsStructureWithThisName( name ) {
 
 
 function mapStructure( structure, more ) {
-  var expand = new Expand({ label: structure.name });
+  var view = new StructureControl({ id: structure.id });
+  var expand = new Expand({ label: structure.name, content: view });
   return expand;
 }
 

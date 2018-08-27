@@ -117,15 +117,20 @@ function createOrga( view ) {
   if( !checkOrganizationName( view.name ) ) return;
   var wait = Dialog.wait(_("adding-orga"));
   var name = view.name.trim();
-  SvcOrga.add( name ).then(function( orgaId ) {
-    wait.detach();
-    g_organizations.push({
-      id: orgaId,
-      name: name,
-      carecenters: []
-    });
-    updateOrganizations();
-  }, wait.detach.bind( wait ));
+  SvcOrga.add( name ).then(
+    function( orgaId ) {
+      wait.detach();
+      g_organizations.push({
+        id: orgaId,
+        name: name,
+        carecenters: []
+      });
+      updateOrganizations();
+    }, function( errcode ) {
+      wait.detach();
+      console.error("Unable to add organization: ", errcode);
+    }
+  );
 }
 
 

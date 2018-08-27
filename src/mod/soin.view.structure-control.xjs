@@ -1,0 +1,19 @@
+{View DIV class:soin-view-structure-control
+  view.attribs: {
+    id: {integer}
+    action-rename: {action}
+    action-delete: {action}
+  }
+
+  [
+    {DIV class:flex [
+      {tfw.view.button icon:edit text:{Intl rename} type:primary on.action:onRename}
+      {tfw.view.button icon:delete text:{Intl delete} type:secondary on.action:onDelete}
+    ]}
+    {tfw.view.button icon:show text:{Intl patient} on.action:onPatient flat:true wide:true}
+    {tfw.view.button icon:show text:{Intl types} on.action:onTypes flat:true wide:true}
+    {tfw.view.button icon:show text:{Intl forms} on.action:onForms flat:true wide:true}
+    {tfw.view.button icon:show text:{Intl vaccins} on.action:onVaccins flat:true wide:true}
+    {tfw.view.button icon:show text:{Intl exams} on.action:onExams flat:true wide:true}
+  ]
+}

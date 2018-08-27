@@ -1,0 +1,6 @@
+div.tfw-view-textarea.view.soin-view-structure-control {
+    width: 90vw;
+    height: 70vh;
+    width: calc(100vw - 64px);
+    height: calc(100vh - 200px);
+}

@@ -20,8 +20,8 @@ exports.rename = rename;
  */
 exports.delete = del;
 
-exports.NOT_GRANTED = 1;
-exports.UNKNOWN_ERROR = 2;
+exports.NOT_GRANTED = -1;
+exports.UNKNOWN_ERROR = -2;
 
 //############################################################
 
@@ -40,7 +40,8 @@ function list() {
 function add( name ) {
   return new Promise(function (resolve, reject) {
     WebService.get("orga.add", { name: name }).then(function(orgaId) {
-      resolve( orgaId );
+      if( orgaId > 0 ) resolve( orgaId );
+      else reject( exports.NOT_GRANTED );
     }, reject);
   });
 }

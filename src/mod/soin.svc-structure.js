@@ -14,6 +14,19 @@ exports.list = list;
 exports.add = add;
 
 /**
+ * @param {string} name - exams, vaccins, patient, forms or types.
+ * @param {number} structureId
+ * @resolve {string}
+ */
+exports.getDef = get;
+/**
+ * @param {string} name - exams, vaccins, patient, forms or types.
+ * @param {number} structureId
+ * @param {string} value
+ * @reolve {number} 0 if ok.
+ */
+exports.setDef = set;
+/**
  * @param {number} structureId
  * @resolve {string}
  */
@@ -99,12 +112,24 @@ function list( orgaId ) {
 
 
 function get( field, structureId ) {
-  return WebService.get( "structure.get", { fld: field, id: structureId } );
+  if( typeof field !== 'string' )
+    throw Error("[soin.svc-structure/get(field, structureId)] `field` must be a string but we got: "
+               + JSON.stringify(field));
+  if( typeof structureId !== 'number' )
+    throw Error("[soin.svc-structure/get(field, structureId)] `structureId` must be a number but we got: "
+               + JSON.stringify(structureId));
+  return WebService.get( "structure.def", { fld: field, id: structureId } );
 }
 
 
 function set( field, structureId, value ) {
-  return WebService.get( "structure.set", { fld: field, id: structureId, val: value } );
+  if( typeof field !== 'string' )
+    throw Error("[soin.svc-structure/get(field, structureId)] `field` must be a string but we got: "
+               + JSON.stringify(field));
+  if( typeof structureId !== 'number' )
+    throw Error("[soin.svc-structure/get(field, structureId)] `structureId` must be a number but we got: "
+               + JSON.stringify(structureId));
+  return WebService.get( "structure.def", { fld: field, id: structureId, value: value } );
 }
 
 
