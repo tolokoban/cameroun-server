@@ -29,7 +29,7 @@ function execService( $args ) {
         \Data\commit();
     }
     catch( Exception $ex ) {
-        error_log('[orga.add] ' . json_encode($args) . ' - ' . $ex->getMessage());
+        error_log('[structure.add] ' . json_encode($args) . ' - ' . $ex->getMessage());
         \Data\rollback();
         return -9;
     }

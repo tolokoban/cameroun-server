@@ -1,4 +1,4 @@
-{View DIV class:soin-view-orga
+{View DIV class:soin-view-structure
   view.attribs: {
     name: {string}
     focus: {boolean true}

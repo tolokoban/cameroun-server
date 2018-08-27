@@ -1,0 +1,12 @@
+{View DIV class:soin-view-carecenter
+  view.attribs: {
+    name: {string}
+    code: {string}
+    focus: {boolean true}
+  }
+
+  [
+    {tfw.view.textbox label:{Intl name} wide:true value:{Bind name} focus:{Bind focus}}
+    {tfw.view.textbox label:{Intl code} wide:true value:{Bind code}}
+  ]
+}

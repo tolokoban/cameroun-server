@@ -19,6 +19,8 @@ var Expand = require("tfw.view.expand");
 var Dialog = require("soin.dialog");
 var Structure = require("soin.view.structure");
 var SvcStructure = require("soin.svc-structure");
+var Carecenter = require("soin.view.carecenter");
+var SvcCarecenter = require("soin.svc-carecenter");
 var StructureControl = require("soin.view.structure-control");
 var CarecenterControl = require("soin.view.carecenter-control");
 
@@ -91,11 +93,15 @@ function actionAddCarecenter( view ) {
   var that = this;
 
   var carecenterName = view.name;
-  Dialog.wait(_('adding-carecenter'), SvcCarecenter.add( this.id, carecenterName ).then(function( carecenterId ) {
-    that.carecenters.push({
-      id: carecenterId, name: carecenterName
-    });
-  }));
+  var carecenterCode = view.code;
+  
+  Dialog.wait(_('adding-carecenter'), SvcCarecenter.add( this.id, carecenterName, carecenterCode ).then(
+    function( carecenterId ) {
+      that.carecenters.push({
+        id: carecenterId, name: carecenterName, code: carecenterCode
+      });
+    }
+  ));
 }
 
 
@@ -114,7 +120,7 @@ var ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 function makeCode() {
   var code = '';
   for( var i=0; i<10; i++ ) {
-    code += ALPHABET.charAt(Math.floor( Math.random(ALPHABET.length) ) );
+    code += ALPHABET.charAt(Math.floor( Math.random() * ALPHABET.length ) );
   }
   return code;
 }
