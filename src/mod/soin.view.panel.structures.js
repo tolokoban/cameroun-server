@@ -30,6 +30,9 @@ function onRefresh() {
 
   SvcStructure.list( this.id ).then(function( structures ) {
     that.structures = structures;
+    return SvcCarecenter.list( that.id );
+  }).then(function( carecenters ) {
+    that.carecenters = carecenters;
     that.actionUptodate = 1;
   });
 }
@@ -94,7 +97,7 @@ function actionAddCarecenter( view ) {
 
   var carecenterName = view.name;
   var carecenterCode = view.code;
-  
+
   Dialog.wait(_('adding-carecenter'), SvcCarecenter.add( this.id, carecenterName, carecenterCode ).then(
     function( carecenterId ) {
       that.carecenters.push({
@@ -106,7 +109,7 @@ function actionAddCarecenter( view ) {
 
 
 function mapCarecenter( carecenter, more ) {
-  var view = new CarecenterControl({ id: carecenter.id });
+  var view = new CarecenterControl({ id: carecenter.id, code: carecenter.code });
   var expand = new Expand({ label: carecenter.name, content: view });
   return expand;
 }

@@ -14,7 +14,7 @@
     {DIV class:flex [
       {DIV class:label textcontent:{Intl code}}
       {DIV class:code textcontent:{Bind code converter:behind.prependId}}
-      {tfw.view.floating-button icon:edit on.action:onCode}
+      {tfw.view.floating-button icon:edit on.action:onCode small:true}
     ]}
   ]
 }
