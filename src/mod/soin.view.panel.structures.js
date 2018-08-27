@@ -4,8 +4,11 @@
 var CODE_BEHIND = {
   onRefresh: onRefresh,
   onAddStructure: onAddStructure,
+  onAddCarecenter: onAddCarecenter,
   mapStructure: mapStructure,
-  header: header
+  headerStructure: headerStructure,
+  mapCarecenter: mapCarecenter,
+  headerCarecenter: headerCarecenter
 };
 
 
@@ -17,6 +20,7 @@ var Dialog = require("soin.dialog");
 var Structure = require("soin.view.structure");
 var SvcStructure = require("soin.svc-structure");
 var StructureControl = require("soin.view.structure-control");
+var CarecenterControl = require("soin.view.carecenter-control");
 
 
 function onRefresh() {
@@ -69,6 +73,48 @@ function mapStructure( structure, more ) {
 }
 
 
-function header( structures ) {
+function headerStructure( structures ) {
   if( structures.length === 0 ) return $.div([_("no-structure")]);
+}
+
+
+function onAddCarecenter() {
+  Dialog.edit({
+    title: _('add-carecenter'),
+    content: new Carecenter({ orga: this.id, name: '', code: makeCode() }),
+    action: actionAddCarecenter.bind( this )
+  });
+}
+
+
+function actionAddCarecenter( view ) {
+  var that = this;
+
+  var carecenterName = view.name;
+  Dialog.wait(_('adding-carecenter'), SvcCarecenter.add( this.id, carecenterName ).then(function( carecenterId ) {
+    that.carecenters.push({
+      id: carecenterId, name: carecenterName
+    });
+  }));
+}
+
+
+function mapCarecenter( carecenter, more ) {
+  var view = new CarecenterControl({ id: carecenter.id });
+  var expand = new Expand({ label: carecenter.name, content: view });
+  return expand;
+}
+
+
+function headerCarecenter( carecenters ) {
+  if( carecenters.length === 0 ) return $.div([_("no-carecenter")]);
+}
+
+var ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+function makeCode() {
+  var code = '';
+  for( var i=0; i<10; i++ ) {
+    code += ALPHABET.charAt(Math.floor( Math.random(ALPHABET.length) ) );
+  }
+  return code;
 }

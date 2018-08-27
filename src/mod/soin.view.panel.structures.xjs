@@ -3,6 +3,7 @@
     id: {integer}  // Organization's id.
     name: {string}  // Organization's name.
     structures: {list []}
+    carecenters: {list []}
     action-refresh: {action behind:onRefresh}
     action-uptodate: {action}
   }
@@ -14,6 +15,11 @@
     ]}
     {HR}
     {tfw.view.button text:{Intl add-structure} type:primary icon:add on.action:onAddStructure}
-    {DIV view.children:{Bind structures map:mapStructure, header:header}}
+    {DIV view.children:{Bind structures map:mapStructure, header:headerStructure}}
+    {HR}
+    {tfw.view.button text:{Intl add-carecenter} type:primary icon:add
+                     enabled:{Bind structures converter:isNotEmpty}
+                     on.action:onAddCarecenter}
+    {DIV view.children:{Bind carecenters map:mapCarecenter, header:headerCarecenter}}
   ]
 }

@@ -60,7 +60,7 @@ function addPanelLogout( organizations ) {
   pm.on( "actionNewOrga", actionNewOrga );
   pm.on( "actionDelOrga", actionDelOrga );
   var panel = new Panel({ content: logout });
-  $.add( document.body, panel );
+  $.add( "BODY", panel );
 }
 
 
@@ -82,7 +82,7 @@ function actionShowStructures( orgaId ) {
 
   var view = new Structures({ id: orgaId, name: orgaName });
   var panel = new Panel({ content: view, pinned: false });
-  $.add( document.body, panel );
+  $.add( "BODY", panel );
   panel.refresh();
 }
 
