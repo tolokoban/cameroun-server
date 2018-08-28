@@ -8,7 +8,7 @@ function execService( $args ) {
     $orgaId = intval( $args );
     $structureIds = \Data\Organization\getStructures( $orgaId );
     $stm = \Data\query("SELECT id, name FROM" . \Data\Structure\name()
-                     . "WHERE id IN (?)", implode(',',$structureIds));
+                     . "WHERE id IN (" . implode(',',$structureIds) . ")");
     $structures = [];
     while( null != ($row = $stm->fetch()) ) {
         $structures[] = [

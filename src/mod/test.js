@@ -1,80 +1,37 @@
 "use strict";
 
-var WS = require("tfw.web-service");
-var Data = require("tfw.data");
-
-var TableIssue = Data.defTable({
-  title: "string256",
-  desc: "string",
-  type: ["QUESTION", "BUG", "IMPROVEMENT"],
-  status: ["NEW", "REJECTED", "ASSIGNED", "TEST", "RESOLVED"],
-  author: "?",
-  solver: "?",
-  comments: "*"
-});
+var $ = require("dom");
+var Combo = require("tfw.view.combo");
+var Button = require("tfw.view.button");
 
 
-var TableComment = Data.defTable({
-  desc: "string",
-  date: "date",
-  issue: "?",
-  author: "?"
-});
-
-
-exports.lstIssue = function( args ) {
-  return WS.get("data.issue.Lst", Data.secureLstArgs( args ));
-};
-
-exports.getIssue = function( id ) {
-  return new Promise(function (resolve, reject) {
-    WS.get("data.issue.Get", { id: id }).then(function( value ) {
-      if( Array.isArray( value ) ) {
-        resolve( value.map(function() { return new TableIssue( value ); }) );
-      } else {
-        resolve( new TableIssue( value ) );
-      }
-    }, reject);
+exports.start = function() {
+  var cboTrueFalse = new Combo({
+    label: "Do you agree?",
+    items: ["Yes", "No"],
+    value: 1
   });
-};
-
-exports.delIssue = function( id ) {
-  return WS.get("data.issue.Del", { id: id });
-};
-
-exports.newIssue = function( attribs ) {
-  return new Promise(function (resolve, reject) {
-    WS.get("data.issue.New", TableIssue.Cast( attribs )).then(function( value ) {
-      resolve( new TableIssue( value ) );
-    }, reject);
+  var combo = new Combo({
+    label: "hello world!",
+    items: ["John", "Paul", "Brigitte", "Vanessa", "The best woman in the world!"],
+    keys: ["john", "paul", "brigitte", "vanessa", "best"],
+    value: "brigitte"
   });
-};
 
-
-exports.lstComment = function( args ) {
-  return WS.get("data.comment.Lst", Data.secureLstArgs( args ));
-};
-
-exports.getComment = function( id ) {
-  return new Promise(function (resolve, reject) {
-    WS.get("data.comment.Get", { id: id }).then(function( value ) {
-      if( Array.isArray( value ) ) {
-        resolve( value.map(function() { return new TableComment( value ); }) );
-      } else {
-        resolve( new TableComment( value ) );
-      }
-    }, reject);
+  var btnVanessa = new Button({ text: "Vanessa" });
+  btnVanessa.on(function() {
+    combo.value = "vanessa";
   });
-};
-
-exports.delComment = function( id ) {
-  return WS.get("data.comment.Del", { id: id });
-};
-
-exports.newComment = function( attribs ) {
-  return new Promise(function (resolve, reject) {
-    WS.get("data.comment.New", TableComment.Cast( attribs )).then(function( value ) {
-      resolve( new TableComment( value ) );
-    }, reject);
+  var btnPaul = new Button({ text: "Paul" });
+  btnPaul.on(function() {
+    combo.value = "paul";
   });
+  var btnSee = new Button({ text: "Read combos", flat: true, icon: "show" });
+  btnSee.on(function() {
+    console.info("[test] combo.value, cboTrueFalse.value=", combo.value, cboTrueFalse.value);
+  });
+
+  $.add( document.body, cboTrueFalse );
+  $.add( document.body, combo );
+  $.add( document.body, btnVanessa, btnPaul, btnSee );
 };

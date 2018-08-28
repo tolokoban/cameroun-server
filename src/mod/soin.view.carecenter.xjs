@@ -2,10 +2,16 @@
   view.attribs: {
     name: {string}
     code: {string}
+    structures: {any}
+    structure: {integer}
     focus: {boolean true}
   }
 
   [
+    {tfw.view.combo label:{Intl structure} wide:true
+                    value:{Bind structure}
+                    items:{Bind structures converter:behind.getItems}
+                    keys:{Bind structures converter:behind.getKeys}}
     {tfw.view.textbox label:{Intl name} wide:true value:{Bind name} focus:{Bind focus}}
     {tfw.view.textbox label:{Intl code} wide:true value:{Bind code}}
   ]

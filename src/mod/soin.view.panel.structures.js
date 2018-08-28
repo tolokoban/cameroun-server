@@ -84,9 +84,19 @@ function headerStructure( structures ) {
 
 
 function onAddCarecenter() {
+  var structure = "";
+  if( this.structures && this.structures.length > 0 ) {
+    structure = this.structures.get(0).id;
+  }
   Dialog.edit({
     title: _('add-carecenter'),
-    content: new Carecenter({ orga: this.id, name: '', code: makeCode() }),
+    content: new Carecenter({
+      orga: this.id,
+      name: '',
+      code: makeCode(),
+      structures: this.structures,
+      structure: structure
+    }),
     action: actionAddCarecenter.bind( this )
   });
 }
@@ -97,8 +107,11 @@ function actionAddCarecenter( view ) {
 
   var carecenterName = view.name;
   var carecenterCode = view.code;
+  var carecenterStructure = view.structure;
 
-  Dialog.wait(_('adding-carecenter'), SvcCarecenter.add( this.id, carecenterName, carecenterCode ).then(
+  Dialog.wait(_('adding-carecenter'), SvcCarecenter.add(
+    this.id, carecenterName, carecenterCode, carecenterStructure
+  ).then(
     function( carecenterId ) {
       that.carecenters.push({
         id: carecenterId, name: carecenterName, code: carecenterCode

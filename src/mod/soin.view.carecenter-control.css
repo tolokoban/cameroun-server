@@ -1,3 +1,8 @@
+div.soin-view-carecenter-control {
+    margin: 0;
+    padding: 0;
+}
+
 div.soin-view-carecenter-control .code {
   font-weight: bold;
   font-family: monospace;

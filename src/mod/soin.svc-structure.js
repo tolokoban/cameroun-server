@@ -98,6 +98,7 @@ function list( orgaId ) {
   return new Promise(function (resolve, reject) {
     WebService.get( "structure.list", orgaId ).then(
       function( structures ) {
+        console.info("[soin.svc-structure] list:", list);
         if( typeof structures === 'number' ) {
           console.error(Error("[list(" + orgaId + ")] Error code: " + structures));
         }

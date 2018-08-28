@@ -8,13 +8,12 @@
 
   [
     {DIV class:flex [
-      {tfw.view.button icon:edit text:{Intl rename} type:primary on.action:onRename}
+      {tfw.view.button icon:edit text:{Intl edit} type:primary on.action:onEdit}
       {tfw.view.button icon:delete text:{Intl delete} type:secondary on.action:onDelete}
     ]}
     {DIV class:flex [
       {DIV class:label textcontent:{Intl code}}
       {DIV class:code textcontent:{Bind code converter:behind.prependId}}
-      {tfw.view.floating-button icon:edit on.action:onCode small:true}
     ]}
   ]
 }

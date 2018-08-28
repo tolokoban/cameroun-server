@@ -37,7 +37,7 @@ function login() {
 
 function start() {
   Dashboard.refresh().then(function() {
-    Splash.open();      
+    Splash.open();
   });
 }
 

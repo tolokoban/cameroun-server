@@ -9,6 +9,7 @@ include_once("./data.php");
    -1: Missing argument `orga`.
    -2: Missing argument `name`.
    -3: Missing argument `code`.
+   -4: Missing argument `structure`.
    -9: SQL error.
  */
 function execService( $args ) {
@@ -18,6 +19,8 @@ function execService( $args ) {
     $carecenterName = $args['name'];
     if( !array_key_exists( 'code', $args ) ) return -3;
     $carecenterCode = $args['code'];
+    if( !array_key_exists( 'structure', $args ) ) return -4;
+    $structureId = intval($args['structure']);
 
     \Data\begin();
     try {
@@ -25,6 +28,7 @@ function execService( $args ) {
         $carecenterId = \Data\Carecenter\add([
             'name' => $carecenterName,
             'code' => $carecenterCode]);
+        \Data\Structure\linkCarecenters( $structureId, $carecenterId );
         \Data\Organization\linkCarecenters( $orgaId, $carecenterId );
         \Data\User\linkCarecenters( $user->getId(), $carecenterId );
         \Data\commit();

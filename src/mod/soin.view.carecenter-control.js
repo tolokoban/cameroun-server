@@ -2,14 +2,14 @@
 "use strict";
 
 var CODE_BEHIND = {
-  onRename: onRename,
+  onEdit: onEdit,
   onDelete: onDelete,
   onCode: onCode,
   prependId: prependId
 };
 
 
-function onRename() {
+function onEdit() {
 
 }
 

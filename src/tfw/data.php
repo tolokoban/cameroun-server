@@ -19,7 +19,9 @@ namespace Data {
     function query() {
         global $DB;
         try {
-            return \call_user_func_array( Array($DB, "query"), func_get_args() );
+            $args = func_get_args();
+            error_log("query: " . json_encode( $args ));
+            return \call_user_func_array( Array($DB, "query"), $args );
         }
         catch( Exception $ex ) {
             throw new \Exception( $ex->getMessage(), SQS_ERROR );
