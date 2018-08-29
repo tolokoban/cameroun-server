@@ -3,8 +3,10 @@
 /**
  * @param {string} args.title
  * @param {object} args.content
- * @param {function} args.action
  * @param {string} args.icon
+ * @param {function} args.action - Function to call on Ok.
+ * @param {function} args.cancel - Function to call on Cancel.
+ * @param {function} args.validator - Must return a promise which resolves only if the data is valid.
  */
 exports.edit = edit;
 /**
@@ -40,12 +42,22 @@ function edit(args) {
     content: args.content,
     footer: [btnCancel, btnOk]
   });
-  btnOk.on(function() {
+  
+  var close = function() {
     dialog.detach();
     try {
       if( typeof args.action === 'function' ) args.action( args.content );
     }
-    catch( ex ) { console.error( "Failure in confirmation function!", ex ); }
+    catch( ex ) { console.error( "Failure in confirmation function!", ex ); }    
+  };
+  
+  btnOk.on(function() {
+    if( args.validator ) {
+      args.validator( args.content ).then( close );
+    }
+    else {
+      close();
+    }
   });
   btnCancel.on(function() {
     dialog.detach();
