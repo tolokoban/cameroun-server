@@ -36,6 +36,16 @@ function execService() {
  *   patients: {
  *     Xq14: {
  *       admissions: [
+ *         {
+ *           enter: 1501239017,
+ *           exit: ...
+ *           consultations: [
+ *             {
+ *               date: 1501239017
+ *             },
+ *             ...
+ *           ]
+ *         },
  *         ...
  *       ]
  *     },
