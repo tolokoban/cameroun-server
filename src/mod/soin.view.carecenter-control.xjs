@@ -13,7 +13,7 @@
     ]}
     {DIV class:flex [
       {DIV class:label textcontent:{Intl code}}
-      {DIV class:code textcontent:{Bind code converter:behind.prependId}}
+      {DIV class:code textcontent:{Bind code converter:behind.prependId} event.tap:onCodeTap}
     ]}
   ]
 }

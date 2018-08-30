@@ -19,9 +19,7 @@ namespace Data {
     function query() {
         global $DB;
         try {
-            $args = func_get_args();
-            error_log("query: " . json_encode( $args ));
-            return \call_user_func_array( Array($DB, "query"), $args );
+            return \call_user_func_array( Array($DB, "query"), func_get_args() );
         }
         catch( Exception $ex ) {
             throw new \Exception( $ex->getMessage(), SQS_ERROR );
@@ -501,6 +499,22 @@ namespace Data\Carecenter {
           . 'WHERE id=?', $id);
         return intVal($row[0]);
     }
+    function getPatients( $id ) {
+        $stm = \Data\query(
+            'SELECT id FROM' . \Data\Patient\name()
+          . 'WHERE `carecenter`=?', $id);
+        $ids = [];
+        while( null != ($row = $stm->fetch()) ) {
+            $ids[] = intVal($row[0]);
+        }
+        return $ids;
+    }
+    function linkPatients( $idCarecenter, $idPatient ) {
+        \Data\query(
+            'UPDATE' . \Data\Patient\name()
+          . 'SET `carecenter`=? '
+          . 'WHERE id=?', $idCarecenter, $idPatient);
+    }
     function getAdmins( $id ) {
         global $DB;
         $stm = \Data\query(
@@ -600,6 +614,12 @@ namespace Data\Patient {
     }
     function del( $id ) {
         \Data\exec( 'DELETE FROM' . \Data\Patient\name() . 'WHERE id=?', $id );
+    }
+    function getCarecenter( $id ) {
+        $row = \Data\fetch(
+            'SELECT `carecenter` FROM' . \Data\Patient\name()
+          . 'WHERE id=?', $id);
+        return intVal($row[0]);
     }
     function getFields( $id ) {
         $stm = \Data\query(

@@ -10,7 +10,7 @@ include_once("./data.php");
    -3: Invalid code.
    -4: Unknown command.
  */
-function execService() {
+function execService( $args ) {
     if( !array_key_exists( 'cmd', $args ) ) return -1;
     $cmd = $args['cmd'];
     if( !array_key_exists( 'code', $args ) ) return -2;
@@ -23,7 +23,7 @@ function execService() {
 
     switch( $cmd ) {
         case 'status':
-            return execStatus( $carecenter, $args );
+            return execStatus( $carecenterId, $args );
         default:
             return -4;
     }
@@ -50,23 +50,51 @@ function execService() {
  *       ]
  *     },
  *     ...
+ *   },
+ *   structure: {
+ *     exams: ..., vaccins: ..., patient: ..., forms: ..., types: ...
  *   }
  * }
  */
-function execStatus( $carecenter, $args ) {
+function execStatus( $carecenterId, $args ) {
+    $structureId = \Data\Carecenter\getStructure( $carecenterId );
+    $structure = \Data\Structure\get( $structureId );
 
+    $patients = null;
+    $patientIds = \Data\Carecenter\getPatients( $carecenterId );
+    foreach( $patientIds as $patientId ) {
+        if( $patients == null ) $patients = [];
+        $patient = \Data\Patient\get( $patientId );
+        $patients[$patient['id']] = [
+            'admissions' => []
+        ];
+    }
+    return [
+        'patients' => $patients,
+        'structure' => $structure
+    ];
 }
 
 
 function parseCode( $code ) {
     $index = strpos( $code, '-' );
-    if( $index === FALSE ) return null;
+    if( $index === FALSE ) {
+        error_log("[synchro] parseCode: '-' not found in '$code'!");
+        return null;
+    }
 
     $id = intval( substr( $code, 0, $index ) );
     $code = substr( $code, $index + 1 );
+    error_log("[synchro] parseCode: id=$id, code='$code'");
     $carecenter = \Data\Carecenter\get( $id );
-    if( $carecenter == null ) return null;
-    if( $carecenter['code'] != $code ) return null;
+    if( $carecenter == null ) {
+        error_log("[synchro] parseCode: No care center with id='$id'!");
+        return null;
+    }
+    if( $carecenter['code'] != $code ) {
+        error_log("[synchro] parseCode: unmatching codes!\n" . $carecenter['code'] . ' != ' . $code);
+        return null;
+    }
 
     return [
         'id' => $id,

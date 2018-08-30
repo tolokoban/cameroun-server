@@ -8,6 +8,8 @@ function execService( $args ) {
     error_log("[carecenter.list] args: " . json_encode($args));
     $orgaId = intval( $args );
     $carecenterIds = \Data\Organization\getCarecenters( $orgaId );
+    if( count( $carecenterIds ) < 1 ) return [];
+
     $stm = \Data\query("SELECT id, `name`, `code`, `structure` FROM" . \Data\Carecenter\name()
                      . "WHERE id IN (" . implode(',',$carecenterIds) . ")");
     $carecenters = [];

@@ -48,6 +48,7 @@ DROP TABLE IF EXISTS `${PREFIX}patient`;
 CREATE TABLE `${PREFIX}patient` (
   `id` INT(11) NOT NULL AUTO_INCREMENT,
   `key` VARCHAR(256),
+  `carecenter` INT(11),
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -151,6 +152,9 @@ ALTER TABLE `${PREFIX}structure`
 ALTER TABLE `${PREFIX}carecenter`
   ADD FOREIGN KEY (`organization`) REFERENCES `${PREFIX}organization`(id) ON DELETE CASCADE,
   ADD FOREIGN KEY (`structure`) REFERENCES `${PREFIX}structure`(id);
+
+ALTER TABLE `${PREFIX}patient`
+  ADD FOREIGN KEY (`carecenter`) REFERENCES `${PREFIX}carecenter`(id) ON DELETE CASCADE;
 
 ALTER TABLE `${PREFIX}patientField`
   ADD FOREIGN KEY (`patient`) REFERENCES `${PREFIX}patient`(id) ON DELETE CASCADE;
