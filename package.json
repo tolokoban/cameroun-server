@@ -30,7 +30,7 @@
         },
         "output": "../../www/cameroun-server"
     },
-    "version": "0.0.1",
+    "version": "0.0.3",
     "reservedModules": [],
     "dependencies": {
         "jasmine-core": "^2.4",
