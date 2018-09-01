@@ -7,6 +7,8 @@ exports.refresh = refresh;
 //############################################################
 
 
+
+
 var $ = require("dom");
 var WS = require("tfw.web-service");
 var PM = require("tfw.binding.property-manager");
@@ -19,7 +21,11 @@ var Structures = require("soin.view.panel.structures");
 var SvcDashboard = require("soin.svc-dashboard");
 
 
-var g_dashboard = { options: {}, panels: [] };
+var g_dashboard = {
+  options: {},
+  // `[{ def:..., view:... }]`
+  panels: []
+};
 var g_viewLogout;
 var g_organizations;
 
@@ -36,14 +42,35 @@ function refresh() {
   return new Promise(function (resolve, reject) {
     clear();
     SvcDashboard.get().then(function( dashboard ) {
-      g_dashboard = dashboard;
       console.info("[soin.dashboard] dashboard=", dashboard);
+      g_dashboard = {
+        options: dashboard.options,
+        panels: [],
+        defs: dashboard.panels
+      };      
       return SvcOrga.list();
     }).then(function( organizations ) {
       g_organizations = organizations;
       addPanelLogout( organizations );
+      loadAllPanels();
       resolve();
     });
+  });
+}
+
+function loadAllPanels() {
+  if( !Array.isArray( g_dashboard.defs ) ) return;
+  if( g_dashboard.defs.length === 0 ) {
+    delete g_dashboard.defs;
+    return;
+  }
+
+  var def = g_dashboard.shift();
+  addPanel( def ).then(function( panel ) {
+    g_dashboard.panels.push({
+      def: def, panel: panel
+    });
+    loadAllPanels();
   });
 }
 
@@ -73,6 +100,19 @@ function actionLogout() {
   }, 1000);
 }
 
+/**
+ * @param {string} def
+ * * `{ type: 'ORG', id: <orgaId> }`
+ */
+function addPanel( def ) {
+  
+}
+
+function findPanel( def ) {
+  var result = g_dashboard.panels.filter(function( panelDef ) {
+    
+  })
+}
 
 function actionShowStructures( orgaId ) {
   var orgas = g_organizations.filter(function( orga ) {
@@ -81,9 +121,7 @@ function actionShowStructures( orgaId ) {
   var orgaName = orgas[0].name;
 
   var view = new Structures({ id: orgaId, name: orgaName });
-  var panel = new Panel({ content: view, pinned: false });
-  $.add( "BODY", panel );
-  panel.refresh();
+  createUnpinnedPanel( view );
 }
 
 
@@ -97,6 +135,21 @@ function actionNewOrga() {
   });
 }
 
+function createUnpinnedPanel( view ) {
+  return new Promise(function (resolve, reject) {
+    var panel = new Panel({ content: view, pinned: false });
+    $.add( "BODY", panel );
+    var pm = PM( panel );
+    pm.on( "actionRefresh", function() {
+      panel.refresh();
+    } );
+    pm.on( "actionClose", function() {
+      $.detach( panel );
+    } );
+
+    panel.refresh();
+  });
+}
 
 /**
  * The orga is already deleted in the database. We just need to remove

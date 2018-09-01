@@ -4,6 +4,7 @@
     code: {string}
     action-rename: {action}
     action-delete: {action}
+    action-patients: {action}
   }
 
   [
@@ -15,5 +16,6 @@
       {DIV class:label textcontent:{Intl code}}
       {DIV class:code textcontent:{Bind code converter:behind.prependId} event.tap:onCodeTap}
     ]}
+    {tfw.view.button icon:user text:{Intl patients} flat:true wide:true action:{Bind action-patients}}
   ]
 }
