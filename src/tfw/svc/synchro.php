@@ -69,7 +69,12 @@ function updateConsultations( $admissionId, &$consultations ) {
     if( !$consultations || !is_array($consultations) ) return;
     foreach( $consultations as $consultation ) {
         $enter = intval($consultation['enter']);
-        $exit = intval($consultation['exit']);
+        if( array_key_exists( 'exit', $consultation ) ) {
+            $exit = intval($consultation['exit']);
+        }
+        else {
+            $exit = 0;
+        }
         $consultationId = getConsultationId( $admissionId, $enter );
         \Data\Consultation\upd( $consultationId, ['enter' => $enter, 'exit' => $exit] );
         $data = $consultation['data'];
@@ -183,17 +188,20 @@ function getPatientId( $carecenterId, &$patient ) {
     \Data\begin();
     try {
         $id = 0;
-        $stm = \Data\query("SELECT id FROM" . \Data\Patient\name()
+        $stm = \Data\query("SELECT id, `edited` FROM" . \Data\Patient\name()
                          . "WHERE `carecenter`=? AND `key`=?",
                            $carecenterId, $patient['id']);
         if( $stm ) {
             $row = $stm->fetch();
-            if( $row ) $id = intval( $row['id'] );
+            if( $row ) {
+                $id = intval( $row['id'] );
+                \Data\Patient\upd($id, [ 'edited' => intval( $patient['edited'] ) ]);
+            }
         }
         if( $id == 0 ) {
             $id = \Data\Patient\add([
                 'key' => $patient['id'],
-                'edited' => 0
+                'edited' => intval( $patient['edited'] )
             ]);
             \Data\Patient\linkCarecenter( $id, $carecenterId );
         }
