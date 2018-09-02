@@ -6,6 +6,7 @@
     carecenters: {list []}
     action-refresh: {action behind:onRefresh}
     action-uptodate: {action}
+    action-add-panel: {action}
   }
 
   [

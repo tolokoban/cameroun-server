@@ -122,7 +122,15 @@ function actionAddCarecenter( view ) {
 
 
 function mapCarecenter( carecenter, more ) {
+  var that = this;
+
   var view = new CarecenterControl({ id: carecenter.id, code: carecenter.code });
+  PM( view ).on( 'actionPatients', function() {
+    that.actionAddPanel = {
+      type: 'PATIENTS-LIST',
+      carecenter: carecenter.id
+    };
+  });
   var expand = new Expand({ label: carecenter.name, content: view });
   return expand;
 }

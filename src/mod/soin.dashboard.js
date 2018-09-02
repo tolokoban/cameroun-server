@@ -2,7 +2,7 @@
 
 exports.clear = clear;
 exports.refresh = refresh;
-
+exports.addPanel = addPanel;
 
 //############################################################
 
@@ -202,6 +202,7 @@ function createUnpinnedPanel( view ) {
       resolve( panel );
     }
     PM( view ).on( 'actionUptodate', onUptodate );
+    PM( view ).on( 'actionAddPanel', addPanel );
 
     panel.refresh();
   });
