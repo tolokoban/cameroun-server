@@ -11,7 +11,7 @@ function execService() {
                      . ' WHERE id=?', $user->getId());
     $dashboard = null;
     $dashboard = @json_decode($row[0]);
-    if( $dashboard == null || !array_key_exists( 'panel', $dashboard ) ) {
+    if( $dashboard == null || !array_key_exists( 'panels', $dashboard ) ) {
         return [
             'options' => ['lang' => ''],
             'panels' => []

@@ -9,7 +9,7 @@
   }
 
   [
-    {DIV class:flex [
+    {DIV class:"title flex thm-bgPL" [
       {DIV class:label textcontent:{Intl orga}}
       {DIV textcontent:{Bind name}}
     ]}

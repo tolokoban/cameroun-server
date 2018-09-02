@@ -14,7 +14,7 @@
     ]}
     {DIV class:flex [
       {DIV class:label textcontent:{Intl code}}
-      {DIV class:code textcontent:{Bind code converter:behind.prependId} event.tap:onCodeTap}
+      {DIV class:code textcontent:{Bind code converter:behind.prependId}}
     ]}
     {tfw.view.button icon:user text:{Intl patients} flat:true wide:true action:{Bind action-patients}}
   ]

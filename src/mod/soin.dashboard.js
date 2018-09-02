@@ -23,7 +23,7 @@ var SvcDashboard = require("soin.svc-dashboard");
 
 var g_dashboard = {
   options: {},
-  // `[{ def:..., view:... }]`
+  // `[{ def:..., view:<this is a PANEL> }]`
   panels: []
 };
 var g_viewLogout;
@@ -46,8 +46,10 @@ function refresh() {
       g_dashboard = {
         options: dashboard.options,
         panels: [],
+        // Temporary array  used to load  all panels one by  one.
+        // @see loadAllPanels().
         defs: dashboard.panels
-      };      
+      };
       return SvcOrga.list();
     }).then(function( organizations ) {
       g_organizations = organizations;
@@ -65,11 +67,8 @@ function loadAllPanels() {
     return;
   }
 
-  var def = g_dashboard.shift();
+  var def = g_dashboard.defs.shift();
   addPanel( def ).then(function( panel ) {
-    g_dashboard.panels.push({
-      def: def, panel: panel
-    });
     loadAllPanels();
   });
 }
@@ -105,23 +104,70 @@ function actionLogout() {
  * * `{ type: 'ORG', id: <orgaId> }`
  */
 function addPanel( def ) {
-  
+  return new Promise(function (resolve, reject) {
+    var panel = findPanel( def );
+    if( panel ) {
+      panel.refresh();
+      resolve( panel );
+      return;
+    }
+
+    var view = null;
+    
+    switch( def.type ) {
+    case 'ORG': view = createViewOrg( def ); break;
+    default:
+      console.error("Unable to parse panel's definition: ", def);
+    }
+
+    if( view ) {
+      createUnpinnedPanel( view ).then(function( panel ) {
+        panel.def = JSON.stringify( def );
+        g_dashboard.panels.push({ def: def, view: panel });
+        saveDashboard();
+        resolve( panel );
+      });
+    }
+    else {
+      resolve( null );
+    }
+  });
 }
 
 function findPanel( def ) {
-  var result = g_dashboard.panels.filter(function( panelDef ) {
-    
-  })
+  var key = JSON.stringify( def );
+  var panels = g_dashboard.panels.filter(function( panelDef ) {
+    // panelDef.def
+    // panelDef.view
+    return key == JSON.stringify( panelDef.def );
+  });
+  if( panels.length === 0 ) return null;
+  return panels[0].view;
+}
+
+function saveDashboard() {
+  var dashboard = {
+    options: g_dashboard.options,
+    panels: g_dashboard.panels.map(function( item ) {
+      return item.def;
+    })
+  };
+  SvcDashboard.set( dashboard );
 }
 
 function actionShowStructures( orgaId ) {
+  addPanel({ type: 'ORG', id: orgaId });
+}
+
+function createViewOrg( def ) {
+  var orgaId = def.id;
   var orgas = g_organizations.filter(function( orga ) {
     return orga.id == orgaId;
   });
   var orgaName = orgas[0].name;
 
   var view = new Structures({ id: orgaId, name: orgaName });
-  createUnpinnedPanel( view );
+  return view;
 }
 
 
@@ -135,6 +181,10 @@ function actionNewOrga() {
   });
 }
 
+/**
+ * @param {object} view.
+ * @resolve panel.
+ */
 function createUnpinnedPanel( view ) {
   return new Promise(function (resolve, reject) {
     var panel = new Panel({ content: view, pinned: false });
@@ -144,13 +194,28 @@ function createUnpinnedPanel( view ) {
       panel.refresh();
     } );
     pm.on( "actionClose", function() {
-      $.detach( panel );
+      closePanel( panel );
     } );
+
+    function onUptodate() {
+      PM( view ).off( 'actionUptodate', onUptodate );
+      resolve( panel );
+    }
+    PM( view ).on( 'actionUptodate', onUptodate );
 
     panel.refresh();
   });
 }
 
+
+function closePanel( panel ) {
+  var stringifiedDef = panel.def;
+  g_dashboard.panels = g_dashboard.panels.filter(function( panelStruct ) {
+    return JSON.stringify( panelStruct.def ) != stringifiedDef;
+  });
+  saveDashboard();
+  $.detach( panel );
+}
 /**
  * The orga is already deleted in the database. We just need to remove
  * it from display.

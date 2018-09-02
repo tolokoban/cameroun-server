@@ -53,3 +53,8 @@ div.soin-view-panel > section {
 div.soin-view-panel > section > div {
   position: relative;  
 }
+
+div.soin-view-panel > section > div > .title {
+  margin: 0 -12px;
+  padding: 8px 16px;
+}

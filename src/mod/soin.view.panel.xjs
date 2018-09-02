@@ -1,9 +1,10 @@
 {View DIV class:"soin-view-panel thm-bgPD thm-ele8"
   view.attribs: {
+    id: {string}   // Stringification of def.
     content: {any behind:onContentChanged}
     pinned: {boolean true}
     action-refresh: {action}
-    action-close: { action}
+    action-close: {action}
   }
 
   class.pinned: {Bind pinned}
