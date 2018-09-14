@@ -4,8 +4,7 @@ div.soin-view-panel {
   vertical-align: top;
   margin: 8px;
   max-width: calc(100vw - 16px);
-  max-height: calc(100vh - 16px);
-  overflow: auto;
+  overflow: initial;
   transform: scale(1);
   opacity: 1;
   transition: all .2s;

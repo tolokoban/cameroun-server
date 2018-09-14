@@ -9,6 +9,6 @@
     "512": "/icon-512.png"
   },
   "name": "cameroun-server",
-  "version": "0.0.8",
+  "version": "0.0.12",
   "description": "Centralisation des données provenant des différents hôpitaux utilisant un logiciel de suivi patient."
 }

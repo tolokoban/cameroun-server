@@ -22,8 +22,9 @@
                         focus:true}
       {tfw.view.textbox label:{Intl password}
                         value:{Bind password}
-                        focus: {Bind txtLogin/action}
+                        focus: {Bind txtLogin/action const:true}
                         wide:true
+                        on.action:onClick
                         type:password}
     ]}
     {FOOTER class: thm-bgPL [
