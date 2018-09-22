@@ -1,0 +1,84 @@
+digraph models_diagram{
+        graph[rankdir=LR, overlap=false, splines=true];
+        node [shape=record, fontsize=9, fontname="Verdana"];
+        edge [style=dashed];
+
+Organization [shape=none, margin=0, label=<
+        <table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+        <tr><td port="0" bgcolor="lightblue">Organization</td></tr>
+        <tr><td align="left">name</td></tr>
+        <tr><td port="organizations" align="left">organizations</td></tr>
+        </table>>];
+
+Structure [shape=none, margin=0, label=<
+        <table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+        <tr><td port="0" bgcolor="lightblue">Structure</td></tr>
+        <tr><td align="left">name</td></tr>
+        <tr><td align="left">exams</td></tr>
+        <tr><td align="left">vaccins</td></tr>
+        <tr><td align="left">patient</td></tr>
+        <tr><td align="left">forms</td></tr>
+        <tr><td align="left">types</td></tr>
+        </table>>];
+
+Carecenter [shape=none, margin=0, label=<
+        <table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+        <tr><td port="0" bgcolor="lightblue">Carecenter</td></tr>
+        <tr><td align="left">name</td></tr>
+        <tr><td align="left">code</td></tr>
+        <tr><td port="organization" align="left">organization</td></tr>
+        <tr><td port="structure" align="left">structure</td></tr>
+        </table>>];
+
+Patient [shape=none, margin=0, label=<
+        <table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+        <tr><td port="0" bgcolor="lightblue">Patient</td></tr>
+        <tr><td align="left">key</td></tr>
+        <tr><td align="left">edited</td></tr>
+        <tr><td port="carecenter" align="left">carecenter</td></tr>
+        </table>>];
+
+PatientField [shape=none, margin=0, label=<
+        <table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+        <tr><td port="0" bgcolor="lightblue">PatientField</td></tr>
+        <tr><td align="left">key</td></tr>
+        <tr><td align="left">value</td></tr>
+        <tr><td port="patient" align="left">patient</td></tr>
+        </table>>];
+
+Admission [shape=none, margin=0, label=<
+        <table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+        <tr><td port="0" bgcolor="lightblue">Admission</td></tr>
+        <tr><td align="left">enter</td></tr>
+        <tr><td align="left">exit</td></tr>
+        <tr><td port="patient" align="left">patient</td></tr>
+        </table>>];
+
+Consultation [shape=none, margin=0, label=<
+        <table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+        <tr><td port="0" bgcolor="lightblue">Consultation</td></tr>
+        <tr><td align="left">enter</td></tr>
+        <tr><td align="left">exit</td></tr>
+        <tr><td port="admission" align="left">admission</td></tr>
+        </table>>];
+
+Data [shape=none, margin=0, label=<
+        <table border="0" cellborder="1" cellspacing="0" cellpadding="4">
+        <tr><td port="0" bgcolor="lightblue">Data</td></tr>
+        <tr><td align="left">key</td></tr>
+        <tr><td align="left">value</td></tr>
+        <tr><td port="consultation" align="left">consultation</td></tr>
+        </table>>];
+
+
+
+Structure:organization -> Organization:0;
+Carecenter:organization -> Organization:0;
+Carecenter:structure -> Structure:0;
+Patient:carecenter -> Carecenter:0;
+PatientField:patient -> Patient:0;
+Admission:patient -> Patient:0;
+Data:consultation -> Consultation:0;
+Consultation:admission -> Admission:0;
+
+}

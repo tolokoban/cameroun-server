@@ -3,13 +3,19 @@ $ROLE = "";
 
 include_once("./data.php");
 
-/*
-   Return codes:
-   -1: Missing arg `cmd`.
-   -2: Missing arg `code`.
-   -3: Invalid code.
-   -4: Unknown command.
-   -5: Missing arg `patient`.
+/**
+ *
+ * # Commands
+ * * status
+ * * update
+ * * structure
+ *
+ * # Return codes:
+ *  -1: Missing arg `cmd`.
+ *  -2: Missing arg `code`.
+ *  -3: Invalid code.
+ *  -4: Unknown command.
+ *  -5: Missing arg `patient`.
  */
 function execService( $args ) {
     if( !array_key_exists( 'cmd', $args ) ) return -1;
@@ -23,6 +29,8 @@ function execService( $args ) {
     $secretCode = $items["code"];
 
     switch( $cmd ) {
+        case 'structure':
+            return execStructure( $carecenterId );
         case 'status':
             return execStatus( $carecenterId );
         case 'update':
@@ -236,16 +244,10 @@ function getPatientId( $carecenterId, &$patient ) {
  *       ]
  *     },
  *     ...
- *   },
- *   structure: {
- *     exams: ..., vaccins: ..., patient: ..., forms: ..., types: ...
  *   }
  * }
  */
 function execStatus( $carecenterId ) {
-    $structureId = \Data\Carecenter\getStructure( $carecenterId );
-    $structure = \Data\Structure\get( $structureId );
-
     $patients = null;
     $patientIds = \Data\Carecenter\getPatients( $carecenterId );
     foreach( $patientIds as $patientId ) {
@@ -257,10 +259,18 @@ function execStatus( $carecenterId ) {
             $patients[$patient['key']]['admissions'] = $admissions;
         }
     }
-    return [
-        'patients' => $patients,
-        'structure' => $structure
-    ];
+    return [ 'patients' => $patients ];
+}
+
+/**
+ * {
+ *   exams: ..., vaccins: ..., patient: ..., forms: ..., types: ...
+ * }
+ */
+function execStructure( $carecenterId ) {
+    $structureId = \Data\Carecenter\getStructure( $carecenterId );
+    $structure = \Data\Structure\get( $structureId );
+    return $structure;
 }
 
 
