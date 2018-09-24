@@ -20,8 +20,9 @@ function connect() {
     view.show = true;
   }, 300);
   var pm = PM( view );
-  pm.on( "actionSuccess", function() { view.show = false; });
-  pm.on( "actionFailure", function() { view.show = false; });
+  var close = function() { view.show = false; };
+  pm.on( "actionSuccess", close );
+  pm.on( "actionFailure", close );
   return view;
 }
 
@@ -31,10 +32,10 @@ function onClick() {
 
   WS.login( this.login, this.password ).then(
     function( user ) {
-      that.actionSuccess = user;      
+      that.actionSuccess = user;
     },
     function( err ) {
-      that.actionFailure = err;
+      that.actionFailure = { login: that.login, error: err };
     }
   );
 }

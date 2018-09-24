@@ -16,7 +16,16 @@ exports.edit = edit;
  */
 exports.alert = alert;
 /**
+ * @param {string} args
+ * @param {string} args.title
+ * @param {function} args.action
+ * @param {string} args.content
+ */
+exports.confirm = confirm;
+/**
  * @param {string} message
+ * @param {function} args.action - Function to call on Ok.
+ * @param {function} args.cancel - Function to call on Cancel.
  * @param {promise=undefined} promise
  */
 exports.wait = wait;
@@ -87,6 +96,34 @@ function alert( args ) {
     dialog.detach();
     if( typeof args.action === 'function' ) args.action( args.content );
   });
+  return dialog;
+}
+
+
+function confirm( args ) {
+  if( typeof args === 'string' ) args = { content: args };
+  if( typeof args.title === 'undefined' ) args.title = _('confirm');
+  if( typeof args.confirm === 'undefined' ) args.confirm = args.title;
+
+  var btnCancel = new Button({ text: _("cancel"), icon: 'cancel', flat: true });
+  var btnOk = new Button({ text: args.confirm, flat: false, type: 'secondary' });
+  var dialog = new Dialog({
+    header: args.title,
+    content: args.content,
+    footer: [btnCancel, btnOk]
+  });
+  dialog.attach();
+  btnCancel.on(function() {
+    dialog.detach(); 
+    if( typeof args.cancel === 'function' ) args.cancel( args.content );
+  });
+  btnOk.on(function() {
+    dialog.detach();
+    if( typeof args.action === 'function' ) args.action( args.content );
+  });
+  window.setTimeout(function() {
+    btnCancel.focus = true;
+  }, 200);
   return dialog;
 }
 

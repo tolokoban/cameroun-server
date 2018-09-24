@@ -161,14 +161,14 @@ namespace Data\User {
     function unlinkOrganizations( $idUser, $idOrganization=null ) {
         global $DB;
         if( $idOrganization == null ) {
-          \Data\query(
-              'DELETE FROM' . $DB->table('Organization_User')
-            . 'WHERE `User`=?', $idUser);
+            \Data\query(
+                'DELETE FROM' . $DB->table('Organization_User')
+              . 'WHERE `User`=?', $idUser);
         }
         else {
-          \Data\query(
-              'DELETE FROM' . $DB->table('Organization_User')
-            . 'WHERE `User`=? AND `Organization`=?', $idUser, $idOrganization);
+            \Data\query(
+                'DELETE FROM' . $DB->table('Organization_User')
+              . 'WHERE `User`=? AND `Organization`=?', $idUser, $idOrganization);
         }
     }
     function getCarecenters( $idUser ) {
@@ -192,14 +192,14 @@ namespace Data\User {
     function unlinkCarecenters( $idUser, $idCarecenter=null ) {
         global $DB;
         if( $idCarecenter == null ) {
-          \Data\query(
-              'DELETE FROM' . $DB->table('Carecenter_User')
-            . 'WHERE `User`=?', $idUser);
+            \Data\query(
+                'DELETE FROM' . $DB->table('Carecenter_User')
+              . 'WHERE `User`=?', $idUser);
         }
         else {
-          \Data\query(
-              'DELETE FROM' . $DB->table('Carecenter_User')
-            . 'WHERE `User`=? AND `Carecenter`=?', $idUser, $idCarecenter);
+            \Data\query(
+                'DELETE FROM' . $DB->table('Carecenter_User')
+              . 'WHERE `User`=? AND `Carecenter`=?', $idUser, $idCarecenter);
         }
     }
 }
@@ -329,14 +329,14 @@ namespace Data\Organization {
     function unlinkAdmins( $idOrganization, $idUser=null ) {
         global $DB;
         if( $idUser == null ) {
-          \Data\query(
-              'DELETE FROM' . $DB->table('Organization_User')
-            . 'WHERE `Organization`=?', $idOrganization);
+            \Data\query(
+                'DELETE FROM' . $DB->table('Organization_User')
+              . 'WHERE `Organization`=?', $idOrganization);
         }
         else {
-          \Data\query(
-              'DELETE FROM' . $DB->table('Organization_User')
-            . 'WHERE `Organization`=? AND `User`=?', $idOrganization, $idUser);
+            \Data\query(
+                'DELETE FROM' . $DB->table('Organization_User')
+              . 'WHERE `Organization`=? AND `User`=?', $idOrganization, $idUser);
         }
     }
 }
@@ -582,14 +582,14 @@ namespace Data\Carecenter {
     function unlinkAdmins( $idCarecenter, $idUser=null ) {
         global $DB;
         if( $idUser == null ) {
-          \Data\query(
-              'DELETE FROM' . $DB->table('Carecenter_User')
-            . 'WHERE `Carecenter`=?', $idCarecenter);
+            \Data\query(
+                'DELETE FROM' . $DB->table('Carecenter_User')
+              . 'WHERE `Carecenter`=?', $idCarecenter);
         }
         else {
-          \Data\query(
-              'DELETE FROM' . $DB->table('Carecenter_User')
-            . 'WHERE `Carecenter`=? AND `User`=?', $idCarecenter, $idUser);
+            \Data\query(
+                'DELETE FROM' . $DB->table('Carecenter_User')
+              . 'WHERE `Carecenter`=? AND `User`=?', $idCarecenter, $idUser);
         }
     }
 }
