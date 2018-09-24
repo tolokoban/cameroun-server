@@ -1,0 +1,18 @@
+div.soin-view-panel-patients-list span.firstname,
+div.soin-view-panel-patients-list span.secondname {
+  margin: 0 0 0 1em;
+}
+
+div.soin-view-panel-patients-list span.lastname {
+  font-size: 90%;
+}
+
+div.soin-view-panel-patients-list span.firstname {
+  font-size: 80%;
+  opacity: .7;
+}
+
+div.soin-view-panel-patients-list span.secondname {
+  font-size: 70%;
+  opacity: .4;
+}

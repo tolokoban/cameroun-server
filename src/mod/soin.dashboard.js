@@ -19,6 +19,7 @@ var Logout = require("soin.view.panel.logout");
 var SvcOrga = require("soin.svc-orga");
 var Structures = require("soin.view.panel.structures");
 var SvcDashboard = require("soin.svc-dashboard");
+var PatientsList = require("soin.view.panel.patients-list");
 
 
 var g_dashboard = {
@@ -116,6 +117,7 @@ function addPanel( def ) {
     
     switch( def.type ) {
     case 'ORG': view = createViewOrg( def ); break;
+    case 'PATIENTS-LIST': view = createViewPatientsList( def ); break;
     default:
       console.error("Unable to parse panel's definition: ", def);
     }
@@ -180,6 +182,18 @@ function actionNewOrga() {
     action: createOrga.bind( view )
   });
 }
+
+
+/**
+ * @param {string} def.type - "PATIENTS-LIST"
+ * @param {number} def.carecenter - Id of the care center.
+ */
+function createViewPatientsList( def ) {
+  var carecenterId = parseInt( def.carecenter );
+  var view = new PatientsList({ id: carecenterId });
+  return view;
+}
+
 
 /**
  * @param {object} view.

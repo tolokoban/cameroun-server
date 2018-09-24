@@ -1,0 +1,20 @@
+{View DIV class:"soin-view-panel-patients-list"
+  view.attribs: {
+    id: {integer behind: refresh}  // Care center's id.
+    name: {string}  // Care center's name.
+    patients: {array []}
+    action-refresh: {action behind:refresh}
+    action-uptodate: {action}
+  }
+
+  [
+    {DIV class:"title flex thm-bgPL" [
+      {DIV class:label textcontent:{Intl patients}}
+      {DIV textcontent:{Bind name}}
+    ]}
+    {tfw.view.expand label:{Bind patients converter:length format:patients-length}
+    
+        {DIV view.children:{Bind patients map:mapPatient header:mapPatientHeader}}
+    }
+  ]
+}

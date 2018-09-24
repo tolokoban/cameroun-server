@@ -5,7 +5,6 @@
  * @resolve {array} `[{ id, name, code }, ...]`
  */
 exports.list = list;
-
 /**
  * @param {number} orgaId
  * @param {string} name
@@ -14,6 +13,10 @@ exports.list = list;
  * @resolve {number} Id of the new carecenter.
  */
 exports.add = add;
+/**
+ * @param {number} carecenterId
+ */
+exports.listPatients = listPatients;
 
 
 //############################################################
@@ -48,6 +51,19 @@ function add( orgaId, name, code, structureId ) {
         else resolve( retcode );
       },
       reject
+    );
+  });
+}
+
+function listPatients( carecenterId ) {
+  return new Promise(function (resolve, reject) {
+    WebService.get( "carecenter.listPatients", carecenterId ).then(
+      function( data ) {
+        resolve( data );
+      },
+      function( err ) {
+        reject( err );
+      }
     );
   });
 }
