@@ -1,0 +1,19 @@
+{View DIV class:soin-view-stats-occurences-of-value-item
+  view.attribs: {
+    max-percent: {float 0}
+    label: {string}
+    count: {integer}
+    percent: {float 0}
+  }
+
+  [
+    {DIV class:header [
+      {DIV class:label textcontent:{Bind label}}
+      {DIV class:count textcontent:{Bind count}}
+    ]}
+    {DIV class:graph [
+      {DIV view.id:bar class:thm-bgS}
+      {DIV class:percent textcontent:{Bind percent converter:behind.percentConverter}}
+    ]}
+  ]
+}

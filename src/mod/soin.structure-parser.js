@@ -1,7 +1,27 @@
 "use strict";
 
+/**
+ * @param {string} definition
+ */
 exports.parse = parse;
-
+/**
+ * @param {object} forms
+ * {
+ *   CONCLUSION: {
+ *     caption: "Conclusion",
+ *     children: {
+ *       "#SURGERY-GYN": {
+ *         caption: "Chirurgie",
+ *         id: "#SURGERY-GYN",
+ *         type: "#SURGERY-GYN"
+ *       }
+ *     }
+ *   },
+ *   ...
+ * }
+ * @return `[{ id:"#SURGERY-GYN", caption:"Chirurgie", path:["Conclusion", "Chirurgie"] }, ...]`
+ */
+exports.flattenFormsFields = flattenFormsFields;
 
 
 /**
@@ -139,4 +159,56 @@ function parseLine( line ) {
   }
 
   return item;
+}
+
+
+/**
+ * @param {object} forms
+ * {
+ *   CONCLUSION: {
+ *     caption: "Conclusion",
+ *     children: {
+ *       "#SURGERY-GYN": {
+ *         caption: "Chirurgie",
+ *         id: "#SURGERY-GYN",
+ *         type: "#SURGERY-GYN"
+ *       }
+ *     }
+ *   },
+ *   ...
+ * }
+ * @return `[{ id:"#SURGERY-GYN", caption:"Chirurgie", path:["Conclusion", "Chirurgie"] }, ...]`
+ */
+function flattenFormsFields( forms ) {
+  var list = [];
+  recursiveFlattenFormsFields( forms, list, [] );
+  list.sort(function(a, b) {
+    var captionA = a.caption;
+    var captionB = b.caption;
+    if( captionA < captionB ) return -1;
+    if( captionA > captionB ) return +1;
+    return 0;
+  });
+  return list;
+}
+
+
+function recursiveFlattenFormsFields( children, list, path ) {
+  Object.keys( children ).forEach(function (key) {
+    var child = children[key];
+    if( typeof child.id === 'string' && child.id.charAt(0) === '#' ) {
+      // Leave.
+      list.push({
+        id: child.id,
+        caption: child.caption,
+        path: path.slice()
+      });
+    }
+    else if( child.children ) {
+      // Node.
+      path.push( child.caption );
+      recursiveFlattenFormsFields( child.children, list, path );
+      path.pop();
+    }
+  });
 }

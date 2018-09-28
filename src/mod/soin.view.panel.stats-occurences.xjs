@@ -1,0 +1,19 @@
+{View DIV class:"soin-view-panel-stats-occurences"
+  view.attribs: {
+    id: {integer}  // Care center's id.
+    name: {string}  // Care center's name.
+    field: {string behind:refresh} // Field's name.
+    stats: {array []}
+    action-refresh: {action behind:refresh}
+    action-uptodate: {action}
+  }
+
+  [
+    {DIV class:"title flex thm-bgPL" [
+      {tfw.view.icon content:stat}
+      {DIV textcontent:{Bind name}}
+    ]}
+    {DIV class:label textcontent:{Bind field}}
+    {soin.view.stats-occurences-of-value items:{Bind stats}}
+  ]
+}

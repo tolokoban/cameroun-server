@@ -5,6 +5,7 @@
     action-rename: {action}
     action-delete: {action}
     action-patients: {action}
+    action-stats: {action}
   }
 
   [
@@ -17,5 +18,6 @@
       {DIV class:code textcontent:{Bind code converter:behind.prependId}}
     ]}
     {tfw.view.button icon:user text:{Intl patients} flat:true wide:true action:{Bind action-patients}}
+    {tfw.view.button icon:stat text:{Intl stats} flat:true wide:true action:{Bind action-stats}}
   ]
 }

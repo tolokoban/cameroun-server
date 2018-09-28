@@ -1,0 +1,17 @@
+{View DIV class:soin-view-stats-input
+  view.attribs: {
+    carecenter-id: {integer behind:onCarecenterIdChanged}
+    field-name: {string "" behind:onFieldNameChanged}
+    items: {array []}
+    keys: {array []}
+    stats: {array []}
+  }
+
+  [
+    {tfw.view.combo value:{Bind field-name} wide:true value:{Bind field-name}
+                    label:{Bind field-name format:label}
+                    items:{Bind items} keys: {Bind keys}}
+    {P textcontent:{Intl hint}}
+    {soin.view.stats-occurences-of-value items:{Bind stats}}
+  ]
+}

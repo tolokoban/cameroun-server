@@ -17,13 +17,13 @@ var PM = require("tfw.binding.property-manager");
 var Button = require("tfw.view.button");
 var Expand = require("tfw.view.expand");
 var Dialog = require("soin.dialog");
-var Structure = require("soin.view.structure");
-var SvcStructure = require("soin.svc-structure");
 var Carecenter = require("soin.view.carecenter");
+var SvcStructure = require("soin.svc-structure");
 var SvcCarecenter = require("soin.svc-carecenter");
+var StructureView = require("soin.view.structure");
+var StatsInputView = require("soin.view.stats-input");
 var StructureControl = require("soin.view.structure-control");
 var CarecenterControl = require("soin.view.carecenter-control");
-
 
 function onRefresh() {
   var that = this;
@@ -41,7 +41,7 @@ function onRefresh() {
 function onAddStructure() {
   Dialog.edit({
     title: _('add-structure'),
-    content: new Structure({ name: '' }),
+    content: new StructureView({ name: '' }),
     action: actionAddStructure.bind( this )
   });
 }
@@ -131,6 +131,7 @@ function mapCarecenter( carecenter, more ) {
       carecenter: carecenter.id
     };
   });
+  PM( view ).on( 'actionStats', createStatsPanel.bind( this, carecenter ) );
   var expand = new Expand({ label: carecenter.name, content: view });
   return expand;
 }
@@ -147,4 +148,25 @@ function makeCode() {
     code += ALPHABET.charAt(Math.floor( Math.random() * ALPHABET.length ) );
   }
   return code;
+}
+
+
+function createStatsPanel( carecenter ) {
+  var that = this;
+
+  var view = new StatsInputView({ carecenterId: carecenter.id });
+  Dialog.confirm({
+    title: carecenter.name,
+    content: view,
+    confirm: _('create'),
+    action: function( view ) {
+      var panelDef = {
+        type: 'STATS-OCCURENCES',
+        carecenterName: carecenter.name,
+        carecenterId: view.carecenterId,
+        fieldName: view.fieldName
+      };
+      that.actionAddPanel = panelDef;
+    }
+  });
 }
