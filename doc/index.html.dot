@@ -1,0 +1,548 @@
+digraph dependencies {
+    "main" -> "$"
+
+    "main" -> "dom"
+
+    "main" -> "tfw.web-service"
+
+    "main" -> "tfw.binding.property-manager"
+
+    "main" -> "soin.splash"
+
+    "main" -> "soin.dialog"
+
+    "main" -> "tfw.install"
+
+    "main" -> "soin.dashboard"
+
+    "main" -> "soin.view.login"
+    "soin.view.login" -> "$"
+
+    "soin.view.login" -> "dom"
+
+    "soin.view.login" -> "tfw.web-service"
+
+    "soin.view.login" -> "tfw.binding.property-manager"
+
+    "soin.view.login" -> "tfw.view"
+
+    "soin.view.login" -> "tfw.binding.link"
+
+    "soin.view.login" -> "tfw.binding.converters"
+
+    "soin.view.login" -> "tfw.view.button"
+
+    "soin.view.login" -> "tfw.view.textbox"
+    "tfw.view.textbox" -> "$"
+
+    "tfw.view.textbox" -> "dom"
+
+    "tfw.view.textbox" -> "tfw.binding.property-manager"
+
+    "tfw.view.textbox" -> "tfw.view"
+
+    "tfw.view.textbox" -> "tfw.binding.link"
+
+    "tfw.view.textbox" -> "tfw.binding.converters"
+    "tfw.binding.converters" -> "$"
+
+    "tfw.binding.converters" -> "tfw.binding.list"
+
+    "tfw.binding.converters" -> "tfw.color"
+    "tfw.color" -> "$"
+    "tfw.binding.list" -> "$"
+
+    "tfw.binding.list" -> "tfw.binding.property-manager"
+
+    "tfw.binding.list" -> "tfw.listeners"
+    "tfw.listeners" -> "$"
+    "tfw.binding.property-manager" -> "$"
+
+    "tfw.binding.property-manager" -> "tfw.event"
+    "tfw.event" -> "$"
+    "tfw.binding.link" -> "$"
+
+    "tfw.binding.link" -> "tfw.binding.property-manager"
+    "tfw.view" -> "$"
+
+    "tfw.view" -> "dom"
+
+    "tfw.view" -> "tfw.binding.property-manager"
+
+    "tfw.view" -> "tfw.binding.converters"
+    "dom" -> "$"
+
+    "dom" -> "polyfill.classList"
+
+    "dom" -> "dom.theme"
+
+    "dom" -> "tfw.gestures"
+    "tfw.gestures" -> "$"
+
+    "tfw.gestures" -> "external.hammer"
+    "external.hammer" -> "$"
+    "dom.theme" -> "$"
+
+    "dom.theme" -> "tfw.color"
+    "polyfill.classList" -> "$"
+    "tfw.view.button" -> "$"
+
+    "tfw.view.button" -> "dom"
+
+    "tfw.view.button" -> "tfw.binding.property-manager"
+
+    "tfw.view.button" -> "tfw.touchable"
+
+    "tfw.view.button" -> "tfw.view"
+
+    "tfw.view.button" -> "tfw.binding.link"
+
+    "tfw.view.button" -> "tfw.binding.converters"
+
+    "tfw.view.button" -> "tfw.view.icon"
+    "tfw.view.icon" -> "$"
+
+    "tfw.view.icon" -> "polyfill.object.values"
+
+    "tfw.view.icon" -> "dom"
+
+    "tfw.view.icon" -> "tfw.icons"
+
+    "tfw.view.icon" -> "tfw.binding.property-manager"
+
+    "tfw.view.icon" -> "tfw.view"
+
+    "tfw.view.icon" -> "tfw.binding.link"
+
+    "tfw.view.icon" -> "tfw.binding.converters"
+    "tfw.icons" -> "$"
+    "polyfill.object.values" -> "$"
+    "tfw.touchable" -> "$"
+
+    "tfw.touchable" -> "dom"
+
+    "tfw.touchable" -> "dom.fx"
+
+    "tfw.touchable" -> "tfw.listeners"
+    "dom.fx" -> "$"
+
+    "dom.fx" -> "polyfill.promise"
+
+    "dom.fx" -> "dom"
+
+    "dom.fx" -> "tfw.data-binding"
+    "tfw.data-binding" -> "$"
+
+    "tfw.data-binding" -> "polyfill.string"
+
+    "tfw.data-binding" -> "dom"
+
+    "tfw.data-binding" -> "tfw.css"
+
+    "tfw.data-binding" -> "tfw.listeners"
+    "tfw.css" -> "$"
+    "polyfill.string" -> "$"
+    "polyfill.promise" -> "$"
+    "tfw.web-service" -> "$"
+
+    "tfw.web-service" -> "tfw.listeners"
+
+    "tfw.web-service" -> "polyfill.promise"
+
+    "tfw.web-service" -> "tfw.storage"
+    "tfw.storage" -> "$"
+    "soin.dashboard" -> "$"
+
+    "soin.dashboard" -> "dom"
+
+    "soin.dashboard" -> "tfw.web-service"
+
+    "soin.dashboard" -> "tfw.binding.property-manager"
+
+    "soin.dashboard" -> "soin.view.panel"
+
+    "soin.dashboard" -> "soin.dialog"
+
+    "soin.dashboard" -> "soin.splash"
+
+    "soin.dashboard" -> "soin.view.panel.logout"
+
+    "soin.dashboard" -> "soin.svc-orga"
+
+    "soin.dashboard" -> "soin.view.panel.structures"
+
+    "soin.dashboard" -> "soin.svc-dashboard"
+
+    "soin.dashboard" -> "soin.view.panel.patients-list"
+
+    "soin.dashboard" -> "soin.view.panel.stats-occurences"
+
+    "soin.dashboard" -> "soin.view.orga"
+    "soin.view.orga" -> "$"
+
+    "soin.view.orga" -> "dom"
+
+    "soin.view.orga" -> "tfw.binding.property-manager"
+
+    "soin.view.orga" -> "tfw.view"
+
+    "soin.view.orga" -> "tfw.binding.link"
+
+    "soin.view.orga" -> "tfw.binding.converters"
+
+    "soin.view.orga" -> "tfw.view.textbox"
+    "soin.view.panel.stats-occurences" -> "$"
+
+    "soin.view.panel.stats-occurences" -> "soin.svc-stats"
+
+    "soin.view.panel.stats-occurences" -> "dom"
+
+    "soin.view.panel.stats-occurences" -> "tfw.binding.property-manager"
+
+    "soin.view.panel.stats-occurences" -> "tfw.view"
+
+    "soin.view.panel.stats-occurences" -> "tfw.binding.link"
+
+    "soin.view.panel.stats-occurences" -> "tfw.binding.converters"
+
+    "soin.view.panel.stats-occurences" -> "tfw.view.icon"
+
+    "soin.view.panel.stats-occurences" -> "soin.view.stats-occurences-of-value"
+    "soin.view.stats-occurences-of-value" -> "$"
+
+    "soin.view.stats-occurences-of-value" -> "dom"
+
+    "soin.view.stats-occurences-of-value" -> "soin.view.stats-occurences-of-value.item"
+
+    "soin.view.stats-occurences-of-value" -> "tfw.binding.property-manager"
+
+    "soin.view.stats-occurences-of-value" -> "tfw.view"
+
+    "soin.view.stats-occurences-of-value" -> "tfw.binding.link"
+
+    "soin.view.stats-occurences-of-value" -> "tfw.binding.converters"
+    "soin.view.stats-occurences-of-value.item" -> "$"
+
+    "soin.view.stats-occurences-of-value.item" -> "dom"
+
+    "soin.view.stats-occurences-of-value.item" -> "tfw.binding.property-manager"
+
+    "soin.view.stats-occurences-of-value.item" -> "tfw.view"
+
+    "soin.view.stats-occurences-of-value.item" -> "tfw.binding.link"
+
+    "soin.view.stats-occurences-of-value.item" -> "tfw.binding.converters"
+    "soin.svc-stats" -> "$"
+
+    "soin.svc-stats" -> "tfw.web-service"
+    "soin.view.panel.patients-list" -> "$"
+
+    "soin.view.panel.patients-list" -> "dom"
+
+    "soin.view.panel.patients-list" -> "soin.svc-carecenter"
+
+    "soin.view.panel.patients-list" -> "tfw.binding.property-manager"
+
+    "soin.view.panel.patients-list" -> "tfw.view"
+
+    "soin.view.panel.patients-list" -> "tfw.binding.link"
+
+    "soin.view.panel.patients-list" -> "tfw.binding.converters"
+
+    "soin.view.panel.patients-list" -> "tfw.view.expand"
+    "tfw.view.expand" -> "$"
+
+    "tfw.view.expand" -> "dom"
+
+    "tfw.view.expand" -> "tfw.binding.property-manager"
+
+    "tfw.view.expand" -> "tfw.view"
+
+    "tfw.view.expand" -> "tfw.binding.link"
+
+    "tfw.view.expand" -> "tfw.binding.converters"
+
+    "tfw.view.expand" -> "tfw.view.icon"
+    "soin.svc-carecenter" -> "$"
+
+    "soin.svc-carecenter" -> "tfw.web-service"
+    "soin.svc-dashboard" -> "$"
+
+    "soin.svc-dashboard" -> "tfw.web-service"
+    "soin.view.panel.structures" -> "$"
+
+    "soin.view.panel.structures" -> "dom"
+
+    "soin.view.panel.structures" -> "tfw.binding.property-manager"
+
+    "soin.view.panel.structures" -> "tfw.view.button"
+
+    "soin.view.panel.structures" -> "tfw.view.expand"
+
+    "soin.view.panel.structures" -> "soin.dialog"
+
+    "soin.view.panel.structures" -> "soin.view.carecenter"
+
+    "soin.view.panel.structures" -> "soin.svc-structure"
+
+    "soin.view.panel.structures" -> "soin.svc-carecenter"
+
+    "soin.view.panel.structures" -> "soin.view.structure"
+
+    "soin.view.panel.structures" -> "soin.view.stats-input"
+
+    "soin.view.panel.structures" -> "soin.view.structure-control"
+
+    "soin.view.panel.structures" -> "soin.view.carecenter-control"
+
+    "soin.view.panel.structures" -> "tfw.view"
+
+    "soin.view.panel.structures" -> "tfw.binding.link"
+
+    "soin.view.panel.structures" -> "tfw.binding.converters"
+    "soin.view.carecenter-control" -> "$"
+
+    "soin.view.carecenter-control" -> "dom"
+
+    "soin.view.carecenter-control" -> "tfw.binding.property-manager"
+
+    "soin.view.carecenter-control" -> "tfw.view"
+
+    "soin.view.carecenter-control" -> "tfw.binding.link"
+
+    "soin.view.carecenter-control" -> "tfw.binding.converters"
+
+    "soin.view.carecenter-control" -> "tfw.view.button"
+    "soin.view.structure-control" -> "$"
+
+    "soin.view.structure-control" -> "dom"
+
+    "soin.view.structure-control" -> "soin.dialog"
+
+    "soin.view.structure-control" -> "tfw.view.textarea"
+
+    "soin.view.structure-control" -> "soin.svc-structure"
+
+    "soin.view.structure-control" -> "soin.structure-parser"
+
+    "soin.view.structure-control" -> "tfw.binding.property-manager"
+
+    "soin.view.structure-control" -> "tfw.view"
+
+    "soin.view.structure-control" -> "tfw.binding.converters"
+
+    "soin.view.structure-control" -> "tfw.view.button"
+    "soin.structure-parser" -> "$"
+    "soin.svc-structure" -> "$"
+
+    "soin.svc-structure" -> "tfw.web-service"
+
+    "soin.svc-structure" -> "tfw.cache"
+    "tfw.cache" -> "$"
+    "tfw.view.textarea" -> "$"
+
+    "tfw.view.textarea" -> "dom"
+
+    "tfw.view.textarea" -> "tfw.binding.property-manager"
+
+    "tfw.view.textarea" -> "tfw.view"
+
+    "tfw.view.textarea" -> "tfw.binding.link"
+
+    "tfw.view.textarea" -> "tfw.binding.converters"
+    "soin.dialog" -> "$"
+
+    "soin.dialog" -> "dom"
+
+    "soin.dialog" -> "wdg.wait"
+
+    "soin.dialog" -> "tfw.view.button"
+
+    "soin.dialog" -> "wdg.modal"
+    "wdg.modal" -> "$"
+
+    "wdg.modal" -> "dom"
+
+    "wdg.modal" -> "tfw.data-binding"
+
+    "wdg.modal" -> "wdg.flex"
+
+    "wdg.modal" -> "wdg.button"
+    "wdg.button" -> "$"
+
+    "wdg.button" -> "tfw.view.button"
+    "wdg.flex" -> "$"
+
+    "wdg.flex" -> "dom"
+
+    "wdg.flex" -> "tfw.data-binding"
+    "wdg.wait" -> "$"
+
+    "wdg.wait" -> "dom"
+
+    "wdg.wait" -> "tfw.data-binding"
+
+    "wdg.wait" -> "wdg.icon"
+    "wdg.icon" -> "$"
+
+    "wdg.icon" -> "tfw.view.icon"
+    "soin.view.stats-input" -> "$"
+
+    "soin.view.stats-input" -> "soin.svc-structure"
+
+    "soin.view.stats-input" -> "soin.structure-parser"
+
+    "soin.view.stats-input" -> "soin.svc-stats"
+
+    "soin.view.stats-input" -> "dom"
+
+    "soin.view.stats-input" -> "tfw.binding.property-manager"
+
+    "soin.view.stats-input" -> "tfw.view"
+
+    "soin.view.stats-input" -> "tfw.binding.link"
+
+    "soin.view.stats-input" -> "tfw.binding.converters"
+
+    "soin.view.stats-input" -> "tfw.view.combo"
+
+    "soin.view.stats-input" -> "soin.view.stats-occurences-of-value"
+    "tfw.view.combo" -> "$"
+
+    "tfw.view.combo" -> "dom"
+
+    "tfw.view.combo" -> "tfw.binding.property-manager"
+
+    "tfw.view.combo" -> "tfw.touchable"
+
+    "tfw.view.combo" -> "tfw.view"
+
+    "tfw.view.combo" -> "tfw.binding.link"
+
+    "tfw.view.combo" -> "tfw.binding.converters"
+
+    "tfw.view.combo" -> "tfw.view.icon"
+    "soin.view.structure" -> "$"
+
+    "soin.view.structure" -> "dom"
+
+    "soin.view.structure" -> "tfw.binding.property-manager"
+
+    "soin.view.structure" -> "tfw.view"
+
+    "soin.view.structure" -> "tfw.binding.link"
+
+    "soin.view.structure" -> "tfw.binding.converters"
+
+    "soin.view.structure" -> "tfw.view.textbox"
+    "soin.view.carecenter" -> "$"
+
+    "soin.view.carecenter" -> "dom"
+
+    "soin.view.carecenter" -> "tfw.binding.property-manager"
+
+    "soin.view.carecenter" -> "tfw.view"
+
+    "soin.view.carecenter" -> "tfw.binding.link"
+
+    "soin.view.carecenter" -> "tfw.binding.converters"
+
+    "soin.view.carecenter" -> "tfw.view.combo"
+
+    "soin.view.carecenter" -> "tfw.view.textbox"
+    "soin.svc-orga" -> "$"
+
+    "soin.svc-orga" -> "tfw.web-service"
+    "soin.view.panel.logout" -> "$"
+
+    "soin.view.panel.logout" -> "dom"
+
+    "soin.view.panel.logout" -> "tfw.binding.property-manager"
+
+    "soin.view.panel.logout" -> "tfw.view.button"
+
+    "soin.view.panel.logout" -> "tfw.view.expand"
+
+    "soin.view.panel.logout" -> "soin.view.orga-control"
+
+    "soin.view.panel.logout" -> "tfw.view"
+
+    "soin.view.panel.logout" -> "tfw.binding.link"
+
+    "soin.view.panel.logout" -> "tfw.binding.converters"
+    "soin.view.orga-control" -> "$"
+
+    "soin.view.orga-control" -> "soin.dialog"
+
+    "soin.view.orga-control" -> "soin.svc-orga"
+
+    "soin.view.orga-control" -> "soin.view.orga"
+
+    "soin.view.orga-control" -> "dom"
+
+    "soin.view.orga-control" -> "tfw.binding.property-manager"
+
+    "soin.view.orga-control" -> "tfw.view"
+
+    "soin.view.orga-control" -> "tfw.binding.link"
+
+    "soin.view.orga-control" -> "tfw.binding.converters"
+
+    "soin.view.orga-control" -> "tfw.view.button"
+    "soin.splash" -> "$"
+
+    "soin.splash" -> "dom"
+    "soin.view.panel" -> "$"
+
+    "soin.view.panel" -> "dom"
+
+    "soin.view.panel" -> "tfw.binding.property-manager"
+
+    "soin.view.panel" -> "tfw.view"
+
+    "soin.view.panel" -> "tfw.binding.link"
+
+    "soin.view.panel" -> "tfw.binding.converters"
+
+    "soin.view.panel" -> "tfw.view.floating-button"
+    "tfw.view.floating-button" -> "$"
+
+    "tfw.view.floating-button" -> "tfw.binding.property-manager"
+
+    "tfw.view.floating-button" -> "tfw.touchable"
+
+    "tfw.view.floating-button" -> "dom"
+
+    "tfw.view.floating-button" -> "tfw.view"
+
+    "tfw.view.floating-button" -> "tfw.binding.link"
+
+    "tfw.view.floating-button" -> "tfw.binding.converters"
+
+    "tfw.view.floating-button" -> "tfw.view.icon"
+    "tfw.install" -> "$"
+
+    "tfw.install" -> "dom"
+
+    "tfw.install" -> "tfw.web-service"
+
+    "tfw.install" -> "tfw.binding.property-manager"
+
+    "tfw.install" -> "tfw.message"
+
+    "tfw.install" -> "wdg.modal"
+
+    "tfw.install" -> "tfw.view.button"
+
+    "tfw.install" -> "tfw.view"
+
+    "tfw.install" -> "tfw.binding.link"
+
+    "tfw.install" -> "tfw.binding.converters"
+
+    "tfw.install" -> "tfw.view.textbox"
+    "tfw.message" -> "$"
+
+    "tfw.message" -> "dom"
+
+}

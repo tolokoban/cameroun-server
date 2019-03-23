@@ -33,11 +33,15 @@
     "version": "0.0.18",
     "reservedModules": [],
     "dependencies": {
+        "core-js": "^3.0.0",
         "jasmine-core": "^2.4",
         "karma": "^0.13",
         "karma-chrome-launcher": "^0.2",
         "karma-firefox-launcher": "^0.1",
-        "karma-jasmine": "^0.3.6"
+        "karma-jasmine": "^0.3.6",
+        "uglify-js": "^3.5.2"
     },
-    "devDependencies": {}
+    "devDependencies": {
+        "toloframework": "^0.50.12"
+    }
 }
