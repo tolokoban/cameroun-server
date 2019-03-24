@@ -10,3 +10,5 @@
 * [tfw.view](tfw.view.md)
 * [tfw.binding.link](tfw.binding.link.md)
 * [tfw.binding.converters](tfw.binding.converters.md)
+* [tfw.view.flex](tfw.view.flex.md)
+* [tfw.view.expand](tfw.view.expand.md)

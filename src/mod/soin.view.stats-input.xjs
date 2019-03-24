@@ -1,17 +1,18 @@
 {View DIV class:soin-view-stats-input
   view.attribs: {
-    carecenter-id: {integer behind:onCarecenterIdChanged}
-    field-name: {string "" behind:onFieldNameChanged}
+    carecenter-id: {integer 0}
+    begin: {string 0}
     items: {array []}
     keys: {array []}
     stats: {array []}
   }
 
+  view.init: init
+
   [
-    {tfw.view.combo value:{Bind field-name} wide:true value:{Bind field-name}
-                    label:{Bind field-name format:label}
+    {tfw.view.combo value:{Bind begin} wide:false
+                    label:{Intl monthes}
                     items:{Bind items} keys: {Bind keys}}
     {P textcontent:{Intl hint}}
-    {soin.view.stats-occurences-of-value items:{Bind stats}}
   ]
 }

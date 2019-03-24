@@ -1,0 +1,124 @@
+digraph dependencies {
+    "test" -> "$"
+
+    "test" -> "dom"
+
+    "test" -> "tfw.view.combo"
+
+    "test" -> "tfw.view.button"
+    "tfw.view.button" -> "$"
+
+    "tfw.view.button" -> "dom"
+
+    "tfw.view.button" -> "tfw.binding.property-manager"
+
+    "tfw.view.button" -> "tfw.touchable"
+
+    "tfw.view.button" -> "tfw.view"
+
+    "tfw.view.button" -> "tfw.binding.link"
+
+    "tfw.view.button" -> "tfw.binding.converters"
+
+    "tfw.view.button" -> "tfw.view.icon"
+    "tfw.view.icon" -> "$"
+
+    "tfw.view.icon" -> "polyfill.object.values"
+
+    "tfw.view.icon" -> "dom"
+
+    "tfw.view.icon" -> "tfw.icons"
+
+    "tfw.view.icon" -> "tfw.binding.property-manager"
+
+    "tfw.view.icon" -> "tfw.view"
+
+    "tfw.view.icon" -> "tfw.binding.link"
+
+    "tfw.view.icon" -> "tfw.binding.converters"
+    "tfw.binding.converters" -> "$"
+
+    "tfw.binding.converters" -> "tfw.binding.list"
+
+    "tfw.binding.converters" -> "tfw.color"
+    "tfw.color" -> "$"
+    "tfw.binding.list" -> "$"
+
+    "tfw.binding.list" -> "tfw.binding.property-manager"
+
+    "tfw.binding.list" -> "tfw.listeners"
+    "tfw.listeners" -> "$"
+    "tfw.binding.property-manager" -> "$"
+
+    "tfw.binding.property-manager" -> "tfw.event"
+    "tfw.event" -> "$"
+    "tfw.binding.link" -> "$"
+
+    "tfw.binding.link" -> "tfw.binding.property-manager"
+    "tfw.view" -> "$"
+
+    "tfw.view" -> "dom"
+
+    "tfw.view" -> "tfw.binding.property-manager"
+
+    "tfw.view" -> "tfw.binding.converters"
+    "dom" -> "$"
+
+    "dom" -> "polyfill.classList"
+
+    "dom" -> "dom.theme"
+
+    "dom" -> "tfw.gestures"
+    "tfw.gestures" -> "$"
+
+    "tfw.gestures" -> "external.hammer"
+    "external.hammer" -> "$"
+    "dom.theme" -> "$"
+
+    "dom.theme" -> "tfw.color"
+    "polyfill.classList" -> "$"
+    "tfw.icons" -> "$"
+    "polyfill.object.values" -> "$"
+    "tfw.touchable" -> "$"
+
+    "tfw.touchable" -> "dom"
+
+    "tfw.touchable" -> "dom.fx"
+
+    "tfw.touchable" -> "tfw.listeners"
+    "dom.fx" -> "$"
+
+    "dom.fx" -> "polyfill.promise"
+
+    "dom.fx" -> "dom"
+
+    "dom.fx" -> "tfw.data-binding"
+    "tfw.data-binding" -> "$"
+
+    "tfw.data-binding" -> "polyfill.string"
+
+    "tfw.data-binding" -> "dom"
+
+    "tfw.data-binding" -> "tfw.css"
+
+    "tfw.data-binding" -> "tfw.listeners"
+    "tfw.css" -> "$"
+    "polyfill.string" -> "$"
+    "polyfill.promise" -> "$"
+    "tfw.view.combo" -> "$"
+
+    "tfw.view.combo" -> "dom"
+
+    "tfw.view.combo" -> "tfw.binding.property-manager"
+
+    "tfw.view.combo" -> "tfw.touchable"
+
+    "tfw.view.combo" -> "tfw.view"
+
+    "tfw.view.combo" -> "tfw.binding.link"
+
+    "tfw.view.combo" -> "tfw.binding.converters"
+
+    "tfw.view.combo" -> "tfw.view.icon"
+
+}

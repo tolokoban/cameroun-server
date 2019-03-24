@@ -164,7 +164,7 @@ function createStatsPanel( carecenter ) {
         type: 'STATS-OCCURENCES',
         carecenterName: carecenter.name,
         carecenterId: view.carecenterId,
-        fieldName: view.fieldName
+        begin: view.begin
       };
       that.actionAddPanel = panelDef;
     }

@@ -193,7 +193,9 @@ digraph dependencies {
     "soin.view.orga" -> "tfw.view.textbox"
     "soin.view.panel.stats-occurences" -> "$"
 
-    "soin.view.panel.stats-occurences" -> "soin.svc-stats"
+    "soin.view.panel.stats-occurences" -> "tfw.fileapi"
+
+    "soin.view.panel.stats-occurences" -> "soin.svc-occurences"
 
     "soin.view.panel.stats-occurences" -> "dom"
 
@@ -205,36 +207,22 @@ digraph dependencies {
 
     "soin.view.panel.stats-occurences" -> "tfw.binding.converters"
 
+    "soin.view.panel.stats-occurences" -> "tfw.view.flex"
+
     "soin.view.panel.stats-occurences" -> "tfw.view.icon"
 
-    "soin.view.panel.stats-occurences" -> "soin.view.stats-occurences-of-value"
-    "soin.view.stats-occurences-of-value" -> "$"
+    "soin.view.panel.stats-occurences" -> "tfw.view.button"
+    "tfw.view.flex" -> "dom"
 
-    "soin.view.stats-occurences-of-value" -> "dom"
+    "tfw.view.flex" -> "tfw.binding.property-manager"
 
-    "soin.view.stats-occurences-of-value" -> "soin.view.stats-occurences-of-value.item"
+    "tfw.view.flex" -> "tfw.view"
 
-    "soin.view.stats-occurences-of-value" -> "tfw.binding.property-manager"
+    "tfw.view.flex" -> "tfw.binding.link"
 
-    "soin.view.stats-occurences-of-value" -> "tfw.view"
-
-    "soin.view.stats-occurences-of-value" -> "tfw.binding.link"
-
-    "soin.view.stats-occurences-of-value" -> "tfw.binding.converters"
-    "soin.view.stats-occurences-of-value.item" -> "$"
-
-    "soin.view.stats-occurences-of-value.item" -> "dom"
-
-    "soin.view.stats-occurences-of-value.item" -> "tfw.binding.property-manager"
-
-    "soin.view.stats-occurences-of-value.item" -> "tfw.view"
-
-    "soin.view.stats-occurences-of-value.item" -> "tfw.binding.link"
-
-    "soin.view.stats-occurences-of-value.item" -> "tfw.binding.converters"
-    "soin.svc-stats" -> "$"
-
-    "soin.svc-stats" -> "tfw.web-service"
+    "tfw.view.flex" -> "tfw.binding.converters"
+    "soin.svc-occurences" -> "tfw.web-service"
+    "tfw.fileapi" -> "$"
     "soin.view.panel.patients-list" -> "$"
 
     "soin.view.panel.patients-list" -> "dom"
@@ -392,8 +380,6 @@ digraph dependencies {
 
     "soin.view.stats-input" -> "soin.structure-parser"
 
-    "soin.view.stats-input" -> "soin.svc-stats"
-
     "soin.view.stats-input" -> "dom"
 
     "soin.view.stats-input" -> "tfw.binding.property-manager"
@@ -405,8 +391,6 @@ digraph dependencies {
     "soin.view.stats-input" -> "tfw.binding.converters"
 
     "soin.view.stats-input" -> "tfw.view.combo"
-
-    "soin.view.stats-input" -> "soin.view.stats-occurences-of-value"
     "tfw.view.combo" -> "$"
 
     "tfw.view.combo" -> "dom"

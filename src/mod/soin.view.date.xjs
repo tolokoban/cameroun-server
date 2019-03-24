@@ -1,0 +1,9 @@
+{View DIV class: soin-view-date
+  view.attribs: {
+    value: {integer 0 behind:onValueChanged}
+  }
+
+  [
+    {tfw.view.combo }
+  ]
+}

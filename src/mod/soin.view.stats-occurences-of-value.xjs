@@ -1,9 +1,17 @@
 {View DIV class: "soin-view-stats-occurences-of-value thm-ele8"
   view.attribs: {
-    items: {array}
+    patients: {any}
+    data: {any}
+    patients-count: {integer 0}
+    consultations-count: {integer 0}
   }
 
   [
-    {DIV class:table view.children:{Bind items map:mapItems, header:mapItemsHeader}}
+    {tfw.view.flex [
+      {DIV [{SPAN textcontent:{Intl patients-count}} {B textcontent:{Bind patients-count}}]}
+      {DIV [{SPAN textcontent:{Intl consultations-count}} {B textcontent:{Bind consultations-count}}]}
+    ]}
+    {tfw.view.expand label:{Intl patients} }
+    {tfw.view.expand label:{Intl data} }
   ]
 }

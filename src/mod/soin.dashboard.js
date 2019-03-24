@@ -200,13 +200,13 @@ function createViewPatientsList( def ) {
  * @param {string} def.type - "STATS-OCCURENCES"
  * @param {string} def.carecenterName - Name of the care center.
  * @param {number} def.carecenterId - Id of the care center.
- * @param {string} def.fieldName - Name of the field for stats.
+ * @param {string} def.begin - Date of the first day of the month.
  */
 function createViewStatsOccurences( def ) {
   var view = new StatsOccurences({
     id: def.carecenterId,
     name: def.carecenterName,
-    field: def.fieldName
+    begin: def.begin
   });
   return view;
 }

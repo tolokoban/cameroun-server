@@ -11,10 +11,10 @@
     "scripts": {
         "test": "node node_modules/karma/bin/karma start karma.conf.js",
         "test:dbg": "node --debug-brk node_modules/karma/bin/karma start karma.conf.js",
-        "debug": "node submodules/tfw/bin/tfw.js build debug test php",
-        "watch": "node submodules/tfw/bin/tfw.js build debug test php watch",
-        "clean": "node submodules/tfw/bin/tfw.js clean",
-        "release": "node submodules/tfw/bin/tfw.js build version php clean"
+        "debug": "tfw build debug test php",
+        "watch": "tfw build debug test php watch",
+        "clean": "tfw clean",
+        "release": "tfw build version php clean"
     },
     "bugs": {
         "url": "https://github.com/tolokoban/cameroun-server/issues"
@@ -42,6 +42,6 @@
         "uglify-js": "^3.5.2"
     },
     "devDependencies": {
-        "toloframework": "^0.50.12"
+        "toloframework": "^0.50.14"
     }
 }

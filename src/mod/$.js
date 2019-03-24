@@ -1,4 +1,4 @@
-exports.config={"name":"\"cameroun-server\"","description":"\"Centralisation des données provenant des différents hôpitaux utilisant un logiciel de suivi patient.\"","author":"\"tolokoban\"","version":"\"0.0.18\"","major":"0","minor":"0","revision":"18","date":"2019-03-23T10:14:11.297Z","consts":{}};
+exports.config={"name":"\"cameroun-server\"","description":"\"Centralisation des données provenant des différents hôpitaux utilisant un logiciel de suivi patient.\"","author":"\"tolokoban\"","version":"\"0.0.18\"","major":"0","minor":"0","revision":"18","date":"2019-03-23T10:30:14.597Z","consts":{}};
 "use strict";
 
 const ZERO_CHAR_CODE = '0'.charCodeAt( 0 );
