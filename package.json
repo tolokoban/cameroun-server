@@ -23,14 +23,14 @@
         "resources": [],
         "modules": [],
         "compile": {
-            "type": "firefoxos",
+            "type": "web",
             "files": [
                 "\\.html$"
             ]
         },
         "output": "../../www/cameroun-server"
     },
-    "version": "0.0.18",
+    "version": "0.0.19",
     "reservedModules": [],
     "dependencies": {
         "core-js": "^3.0.0",
