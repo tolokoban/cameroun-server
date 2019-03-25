@@ -21,7 +21,7 @@ function init() {
   const keys = [];
   const items = [];
 
-  for( let k=0; k<36; k++) {
+  for( let k=0; k<12; k++) {
     keys.push( Math.floor(d.getTime() * 0.001) );
     items.push( `${_('month-' + d.getMonth())} ${d.getFullYear()}` );
     d.setMonth( d.getMonth() - 1 );

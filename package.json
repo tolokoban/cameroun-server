@@ -23,15 +23,37 @@
         "resources": [],
         "modules": [],
         "compile": {
-            "type": "web",
+            "type": "desktop",
             "files": [
-                "\\.html$"
+                "index\\.html$"
             ]
         },
         "output": "../../www/cameroun-server"
     },
-    "version": "0.0.19",
-    "reservedModules": [],
+    "version": "0.0.20",
+    "reservedModules": [
+        "fs",
+        "path",
+        "process",
+        "child_process",
+        "cluster",
+        "http",
+        "os",
+        "crypto",
+        "dns",
+        "domain",
+        "events",
+        "https",
+        "net",
+        "readline",
+        "stream",
+        "string_decoder",
+        "tls",
+        "dgram",
+        "util",
+        "vm",
+        "zlib"
+    ],
     "dependencies": {
         "core-js": "^3.0.0",
         "jasmine-core": "^2.4",

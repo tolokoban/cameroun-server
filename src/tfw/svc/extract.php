@@ -33,12 +33,13 @@ function execService( $args ) {
          . "AND A.patient = P.id "
          . "AND C.admission = A.id "
          . "AND C.enter >= ? "
-         . "AND C.enter < ? "
+         . "AND C.enter < ? "    
          . "GROUP BY P.id";
 
     $stm = \Data\query( $sql, $carecenterId, $begin, $end );
     $patients = [];
     $ids = [];
+    $patientKeysById = [];
     if( $stm ) {
         while( null != ($row = $stm->fetch()) ) {
             $id = intVal($row[0]);
@@ -46,6 +47,7 @@ function execService( $args ) {
             $consultations = intVal($row[2]);
             $patients[$key] = [ '$consultations' => $consultations ];
             $ids[] = $id;
+            $patientKeysById[$row[0]] = $key;
         }
     }
 
@@ -60,13 +62,18 @@ function execService( $args ) {
     if( $stm ) {
         while( null != ($row = $stm->fetch()) ) {
             $key = $row[0];
+            if( $key == '#PATIENT-LASTNAME' ) continue;
+            if( $key == '#PATIENT-FIRSTNAME' ) continue;
+            if( $key == '#PATIENT-SECONDNAME' ) continue;
             $value = $row[1];
             $patient = $row[2];
             $patients[$patient][$key] = $value;
         }
     }
 
-    $sql = "SELECT D.key, D.value, count(*) AS occurences "
+    //====================================================================
+    
+    $sql = "SELECT C.id, D.key, D.value, P.id, C.enter "
          . "FROM " . \Data\Consultation\name() ." AS C, "
          . \Data\Data\name() ." AS D, "
          . \Data\Patient\name() ." AS P, "
@@ -77,21 +84,23 @@ function execService( $args ) {
          . "AND C.admission = A.id "
          . "AND C.enter >= ? "
          . "AND C.enter < ? "
-         . "GROUP BY D.key, D.value "
-         . "ORDER BY D.key, D.value";
+         . "ORDER BY C.enter";
 
     $stm = \Data\query( $sql, $carecenterId, $begin, $end );
     $data = [];
     if( $stm ) {
         while( null != ($row = $stm->fetch()) ) {
-            $key = $row[0];
-            $val = $row[1];
-            $occ = intVal($row[2]);
-            if( !array_key_exists( $key, $data ) ) {
-                $data[$key] = [ $val => $occ ];
-            } else {
-                $data[$key][$val] = $occ;
+            $consultationId = intVal($row[0]);
+            $key = $row[1];
+            $val = $row[2];
+            $patientId = $row[3];
+            $enter = intVal($row[4]);
+            $patientKey = $patientKeysById[$patientId];
+            if( !array_key_exists( $consultationId, $data ) ) {
+                $data[$consultationId] = [ "patient" => $patientKey ];
+                $data[$consultationId]["date"] = $enter;
             }
+            $data[$consultationId][$key] = $val;
         }
     }
 
