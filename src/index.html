@@ -1,6 +1,8 @@
 <x-html app="main">
     <head>
-        <style>body{padding:0;overflow:hidden}#splash2,#splash1{position:absolute;left:0;top:0;width:100%;height:100%;margin:0;z-index:9999}</style>
+        <style>body{padding:0;overflow:hidden}#splash2,#splash1{position:absolute;left:0;top:0;width:100%;height:100%;margin:0;z-index:9999}body.start #splash1{transform:translateY(-100%);transition:all 1s}body.start #splash2{transform:translateY(100%);transition:all 1s}
+#BODY{position:fixed;bottom:16px;right:16px;padding:0;z-index:9999}         
+</style>
     </head>
     <body>
         <svg xmlns="http://www.w3.org/2000/svg"
