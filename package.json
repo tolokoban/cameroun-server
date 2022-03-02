@@ -57,7 +57,7 @@
     "dependencies": {
         "core-js": "^3.0.0",
         "jasmine-core": "^2.4",
-        "karma": "^0.13",
+        "karma": "^6.3",
         "karma-chrome-launcher": "^0.2",
         "karma-firefox-launcher": "^0.1",
         "karma-jasmine": "^0.3.6",
